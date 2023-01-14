@@ -1,0 +1,47 @@
+[user]
+    name = Florian Hild
+    email = florian-hild@github.de
+[core]
+    editor = vim
+    # Linux
+    autocrlf = input
+    # Windows
+    #autocrlf = true
+    safecrlf = false
+    whitespace = fix,trailing-space,-space-before-tab,tab-in-indent,cr-at-eol
+    pager = less
+[pull]
+    ff = only
+    rebase = merges
+[merge]
+    ff = false
+[diff]
+    compactionHeuristic = true
+[color]
+    ui = auto
+[color "status"]
+    added = green bold
+    changed = yellow bold
+    untracked = red bold
+[color "diff"]
+    meta = yellow bold
+    frag = magenta bold
+    old = red bold
+    new = green bold
+    whitespace = red reverse
+[alias]
+    a = add -v
+    b = branch -va
+    lg = log --all --color --graph --abbrev-commit --pretty=format:'%C(yellow)%h %Cred%ad %Cblue%an%Cgreen%d %Creset%s' --date=format:'%Y-%m-%d %H:%M'
+    lgg = log  --all --color --graph --abbrev-commit --pretty=format:'%C(yellow)%h %Cred%ad %Cblue%an%Cgreen%d %Creset%s' --date=format:'%Y-%m-%d %H:%M' --name-status
+    lgf = log --all --color --graph --abbrev-commit --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --date=relative -p
+    st = status --short
+    co = checkout
+    pl = pull --rebase
+    d = diff --staged
+    dh = diff HEAD
+    pb = push -u origin HEAD
+[rerere]
+	enabled = true
+[init]
+    defaultBranch = main
