@@ -90,13 +90,13 @@ export BIN="$HOME/linux_home/bin"
 if [[ "${LOGNAME}" = "root" ]] || [[ "$(id -u)" -eq "0" ]]; then
   case "$TERM" in
     screen*|xterm*|tmux-*)
-      PS1='\[$(tput setaf 85)\]\u@\h\[$(tput setaf 3)\]$(git branch 2>/dev/null|sed -n "s/* \(.*\)/ [\1]/p")\[$(tput sgr0)\]:
+      PS1='\[$(tput setaf 85)\]\u@\h\[$(tput setaf 3)\]$(git branch 2>/dev/null|sed -n "s/* \(.*\)/ [\1]/p")\[$(tput sgr0)\]: \[$(tput setaf 81)\]\w\n\[$(tput setaf 85)\]$\[$(tput sgr0)\] '
     ;;
   esac
 else
   case "$TERM" in
     screen*|xterm*|tmux-*)
-      PS1='\[$(tput setaf 85)\]\u@\h\[$(tput setaf 3)\]$(git branch 2>/dev/null|sed -n "s/* \(.*\)/ [\1]/p")\[$(tput sgr0)\]:
+      PS1='\[$(tput setaf 85)\]\u@\h\[$(tput setaf 3)\]$(git branch 2>/dev/null|sed -n "s/* \(.*\)/ [\1]/p")\[$(tput sgr0)\]: \[$(tput setaf 81)\]\w\n\[$(tput setaf 85)\]$\[$(tput sgr0)\] '
     ;;
   esac
 fi

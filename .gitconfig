@@ -32,9 +32,9 @@
 [alias]
     a = add -v
     b = branch -va
-    lg = log --all --color --graph --abbrev-commit --pretty=format:'%C(yellow)%h %Cred%ad %Cblue%an%Cgreen%d %Creset%s' --dat
-    lgg = log  --all --color --graph --abbrev-commit --pretty=format:'%C(yellow)%h %Cred%ad %Cblue%an%Cgreen%d %Creset%s' --d
-    lgf = log --all --color --graph --abbrev-commit --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(b
+    lg = log --all --color --graph --abbrev-commit --pretty=format:'%C(yellow)%h %Cred%ad %Cblue%an%Cgreen%d %Creset%s' --date=format:'%Y-%m-%d %H:%M'
+    lgg = log  --all --color --graph --abbrev-commit --pretty=format:'%C(yellow)%h %Cred%ad %Cblue%an%Cgreen%d %Creset%s' --date=format:'%Y-%m-%d %H:%M' --name-status
+    lgf = log --all --color --graph --abbrev-commit --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --date=relative -p
     st = status --short
     co = checkout
     pl = pull --rebase
@@ -47,3 +47,5 @@
     enabled = true
 [init]
     defaultBranch = main
+
+
