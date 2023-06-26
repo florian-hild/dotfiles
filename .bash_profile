@@ -45,6 +45,8 @@ alias du="du -sh *"
 alias df="df -hT"
 alias tree="tree -C"
 alias vi="vim"
+alias diff="diff -EZBbw"
+alias less="less -R"
 # My aliases
 alias showaliases="alias|cut -d'=' -f1"
 alias lstoday="ls -al --time-style=+%D | grep --color=none $(date +%D)"
@@ -77,6 +79,7 @@ function gc-perf { git commit -m "perf: ${*:-'improve performance'} :racehorse:"
 function gc-ci { git commit -m "ci: ${*:-'improve ci'} :construction_worker:"; }
 function gc-sec { git commit -m "sec: ${*:-'improve security'} :lock:"; }
 function gc-init { git commit --allow-empty -m "init: ${*:-'first commit'} :tada:"; }
+function set_venv { if [[ -z "${1// }" ]]; then ls -1 ~/python_venv; else source ~/python_venv/${1}/bin/activate; fi; }
 
 ### Set environment variables
 export TERM=xterm-256color
@@ -87,13 +90,13 @@ export BIN="$HOME/linux_home/bin"
 if [[ "${LOGNAME}" = "root" ]] || [[ "$(id -u)" -eq "0" ]]; then
   case "$TERM" in
     screen*|xterm*|tmux-*)
-      PS1='\[$(tput setaf 85)\]\u@\h\[$(tput setaf 3)\]$(git branch 2>/dev/null|sed -n "s/* \(.*\)/ [\1]/p")\[$(tput sgr0)\]: \[$(tput setaf 81)\]\w\n\[$(tput setaf 85)\]$\[$(tput sgr0)\] '
+      PS1='\[$(tput setaf 85)\]\u@\h\[$(tput setaf 3)\]$(git branch 2>/dev/null|sed -n "s/* \(.*\)/ [\1]/p")\[$(tput sgr0)\]:
     ;;
   esac
 else
   case "$TERM" in
     screen*|xterm*|tmux-*)
-      PS1='\[$(tput setaf 85)\]\u@\h\[$(tput setaf 3)\]$(git branch 2>/dev/null|sed -n "s/* \(.*\)/ [\1]/p")\[$(tput sgr0)\]: \[$(tput setaf 81)\]\w\n\[$(tput setaf 85)\]$\[$(tput sgr0)\] '
+      PS1='\[$(tput setaf 85)\]\u@\h\[$(tput setaf 3)\]$(git branch 2>/dev/null|sed -n "s/* \(.*\)/ [\1]/p")\[$(tput sgr0)\]:
     ;;
   esac
 fi

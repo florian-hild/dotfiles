@@ -32,16 +32,18 @@
 [alias]
     a = add -v
     b = branch -va
-    lg = log --all --color --graph --abbrev-commit --pretty=format:'%C(yellow)%h %Cred%ad %Cblue%an%Cgreen%d %Creset%s' --date=format:'%Y-%m-%d %H:%M'
-    lgg = log  --all --color --graph --abbrev-commit --pretty=format:'%C(yellow)%h %Cred%ad %Cblue%an%Cgreen%d %Creset%s' --date=format:'%Y-%m-%d %H:%M' --name-status
-    lgf = log --all --color --graph --abbrev-commit --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --date=relative -p
+    lg = log --all --color --graph --abbrev-commit --pretty=format:'%C(yellow)%h %Cred%ad %Cblue%an%Cgreen%d %Creset%s' --dat
+    lgg = log  --all --color --graph --abbrev-commit --pretty=format:'%C(yellow)%h %Cred%ad %Cblue%an%Cgreen%d %Creset%s' --d
+    lgf = log --all --color --graph --abbrev-commit --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(b
     st = status --short
     co = checkout
     pl = pull --rebase
     d = diff --staged
     dh = diff HEAD
     pb = push -u origin HEAD
+    w = worktree
+    wl = worktree list
 [rerere]
-	enabled = true
+    enabled = true
 [init]
     defaultBranch = main
