@@ -6,15 +6,15 @@
 #     . ~/linux_home/bash_profile
 # fi
 
-export LANG=C.UTF-8
-export LC_ALL=C.UTF-8
 # Expand Vars in bash tab completion
 shopt | grep -qw '^direxpand' && shopt -s direxpand
 
 ### Set PATH
 mypaths=(
   "$HOME/bin"
+  "$HOME/local/bin"
   "$HOME/linux_home/bin"
+  "$HOME/$(hostname -s)/bin"
 )
 
 # Export PATH
@@ -79,7 +79,7 @@ function gc-perf { git commit -m "perf: ${*:-'improve performance'} :racehorse:"
 function gc-ci { git commit -m "ci: ${*:-'improve ci'} :construction_worker:"; }
 function gc-sec { git commit -m "sec: ${*:-'improve security'} :lock:"; }
 function gc-init { git commit --allow-empty -m "init: ${*:-'first commit'} :tada:"; }
-function set_venv { if [[ -z "${1// }" ]]; then ls -1 ~/python_venv; else source ~/python_venv/${1}/bin/activate; fi; }
+function set_venv { if [[ -z "${1// }" ]]; then source $PWD/.venv/bin/activate; else source ~/project/python_venv/${1}/bin/activate; fi; }
 
 ### Set environment variables
 export TERM=xterm-256color
