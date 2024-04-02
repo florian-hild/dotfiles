@@ -12,9 +12,10 @@ shopt | grep -qw '^direxpand' && shopt -s direxpand
 ### Set PATH
 mypaths=(
   "$HOME/bin"
+  "$HOME/$(hostname -s)/bin"
   "$HOME/local/bin"
   "$HOME/linux_home/bin"
-  "$HOME/$(hostname -s)/bin"
+  "$HOME/local/bin/bash_bin"
 )
 
 # Export PATH
@@ -79,7 +80,7 @@ function gc-perf { git commit -m "perf: ${*:-'improve performance'} :racehorse:"
 function gc-ci { git commit -m "ci: ${*:-'improve ci'} :construction_worker:"; }
 function gc-sec { git commit -m "sec: ${*:-'improve security'} :lock:"; }
 function gc-init { git commit --allow-empty -m "init: ${*:-'first commit'} :tada:"; }
-function set_venv { if [[ -z "${1// }" ]]; then source $PWD/.venv/bin/activate; else source ~/project/python_venv/${1}/bin/activate; fi; }
+function activate { if [[ -z "${1// }" ]]; then source $PWD/.venv/bin/activate; else source ~/project/python_venv/${1}/bin/activate; fi; }
 
 ### Set environment variables
 export TERM=xterm-256color
@@ -96,7 +97,7 @@ if [[ "${LOGNAME}" = "root" ]] || [[ "$(id -u)" -eq "0" ]]; then
 else
   case "$TERM" in
     screen*|xterm*|tmux-*)
-      PS1='\[$(tput setaf 85)\]\u@\h\[$(tput setaf 3)\]$(git branch 2>/dev/null|sed -n "s/* \(.*\)/ [\1]/p")\[$(tput sgr0)\]: \[$(tput setaf 81)\]\w\n\[$(tput setaf 85)\]$\[$(tput sgr0)\] '
+      PS1='\[$(tput setaf 85)\]\u@\h\[$(tput setaf 3)\]$(git branch 2>/dev/null|sed -n "s/* \(.*\)/ [\1]/p")$([ -z ${AWS_PROFILE} ] || echo " (${AWS_PROFILE})")\[$(tput sgr0)\]: \[$(tput setaf 81)\]\w\n\[$(tput setaf 85)\]$\[$(tput sgr0)\] '
     ;;
   esac
 fi
