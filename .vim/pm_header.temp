@@ -1,0 +1,27 @@
+#!/usr/bin/perl -w
+package SUP::Project_name::Modul_name;
+
+################################################################################
+# Kurzbeschr. :
+# Entwickler  : F.Hild
+# Datum       :
+# Ablageort   : lib Ordner des jeweiligen Projectes
+# Git-Repo    :
+# Beschreibung:
+################################################################################
+
+use strict;
+use warnings;
+use Exporter qw(import);
+
+BEGIN {
+    # Werden mit use immer exportiert
+    #our @EXPORT = qw();
+    # Werden mit use nur exportiert wenn explizit mit qw(func1 func2) angegeben
+    #our @EXPORT_OK = qw();
+    # Kann mit $My::Test::VERSION abgefragt werden
+    our $VERSION = '1.0';
+}
+
+
+1;
