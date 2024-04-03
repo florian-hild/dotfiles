@@ -13,8 +13,8 @@ if [[ -f ~/.bash_profile_$(hostname -s) ]]; then
 fi
 
 # Load all bash profile configs in .bash_profile.d directory
-bash_config_path="$(dirname "$(realpath "${BASH_SOURCE[0]}")")/.bash_profile.d"
-for bash_config_file in $(/usr/bin/find ${bash_config_path} -type f -name "*.sh" | LANG=C /usr/bin/sort); do
+bash_config_path="$(dirname "${BASH_SOURCE[0]}")/.bash_profile.d"
+for bash_config_file in $(/usr/bin/find ${bash_config_path} -type f -name "*.sh" | LANG=C sort); do
   . "${bash_config_file}"
 done
 unset bash_config_path

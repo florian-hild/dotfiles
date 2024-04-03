@@ -1,3 +1,5 @@
-# bash-completion all the ssh commands from history
-
-complete -W "$(/bin/grep -Pow "^ssh\s+([\.0-9a-zA-Z]+@)?([a-zA-Z]+([\.0-9a-zA-Z]+)?(-[\.0-9a-zA-Z]+)*|([0-9]{1,3}\.){3}[0-9]{1,3})" ${HISTFILE} | LANG=C sort | uniq)" ssh
+# Mac OS
+if [[ "$(uname -s)" == "Darwin" ]]; then
+  export BASH_COMPLETION_COMPAT_DIR="$(brew --prefix)/etc/bash_completion.d"
+  [[ -r "$(brew --prefix)/etc/profile.d/bash_completion.sh" ]] && . "$(brew --prefix)/etc/profile.d/bash_completion.sh"
+fi

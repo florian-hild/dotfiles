@@ -1,6 +1,6 @@
 # git
 alias commit_messages='echo "add: :rocket:"; echo "delete: :x:"; echo "update: :arrow_up:"; echo "rename: :truck:"; echo "feature: :sparkles:"; echo "fix: :adhesive_bandage:";echo "revert: :rewind:"; echo "refactor: :hammer:"; echo "docs: :books:"; echo "style: :art:"; echo "format: :triangular_ruler:"; echo "test: :white_check_mark:"; echo "perf: :racehorse:"; echo "ci: :construction_worker:"; echo "sec: :lock:"; echo "init: first commit :tada:"'
-if ! uname -r | sed 's/^.*\(el[0-9]\+\).*$/\1/' | /bin/grep -q -i "el5"; then
+if ! uname -r | sed 's/^.*\(el[0-9]\+\).*$/\1/' | /usr/bin/grep -q -i "el5"; then
   function gc-add { git commit -m "add: ${*:-'add file'} :rocket:"; }
   function gc-delete { git commit -m "delete: ${*:-'remove file'} :x:"; }
   function gc-update { git commit -m "update: ${*:-'update file'} :arrow_up:"; }
