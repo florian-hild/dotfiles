@@ -1,6 +1,7 @@
 [user]
     name = Florian Hild
-    email = florian-hild@github.de
+    email = florian-hild@gmail.com
+	signingKey = 73F00258B69A6438
 [core]
     editor = vim
     # Linux
@@ -32,6 +33,7 @@
 [alias]
     a = add -v
     b = branch -va
+    bb = !git for-each-ref --color --sort=-committerdate --format=$'%(color:red)%(ahead-behind:HEAD)\t%(color:blue)%(refname:short)\t%(color:yellow)%(committerdate:relative)\t%(color:default)%(describe)' refs/heads/ | sed 's/ /\t/' | column --separator=$'\t' --table --table-columns='Ahead,Behind,Branch Name,Last Commit,Description'
     lg = log --all --color --graph --abbrev-commit --pretty=format:'%C(yellow)%h %Cred%ad %Cblue%an%Cgreen%d %Creset%s' --date=format:'%Y-%m-%d %H:%M'
     lgg = log  --all --color --graph --abbrev-commit --pretty=format:'%C(yellow)%h %Cred%ad %Cblue%an%Cgreen%d %Creset%s' --date=format:'%Y-%m-%d %H:%M' --name-status
     lgf = log --all --color --graph --abbrev-commit --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --date=relative -p
@@ -39,13 +41,24 @@
     co = checkout
     pl = pull --rebase
     d = diff --staged
+    f = fetch --all -Pp
     dh = diff HEAD
     pb = push -u origin HEAD
     w = worktree
     wl = worktree list
+    wr = worktree remove
+    staash = stash --all
 [rerere]
-    enabled = true
+	enabled = true
 [init]
     defaultBranch = main
-
-
+[credential "https://github.com"]
+    helper = !/usr/bin/gh auth git-credential
+[credential "https://gist.github.com"]
+    helper = !/usr/bin/gh auth git-credential
+[branch]
+    sort = -committerdate
+[commit]
+	gpgSign = true
+[gpg]
+	program = gpg
