@@ -62,3 +62,5 @@
 	gpgSign = true
 [gpg]
 	program = gpg
+[rebase]
+	updateRefs = true
