@@ -1,8 +1,8 @@
 # bash_profile from F.Hild
 
 # Add to ~/.bash_profile:
-# if [ -f ${HOME}/linux_home*/.bash_profile ]; then
-#   . ${HOME}/linux_home*/.bash_profile
+# if [ -f ${HOME}/.dotfiles/bash_profile ]; then
+#   . ${HOME}/.dotfiles/.bash_profile
 # fi
 
 
