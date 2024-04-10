@@ -1,7 +1,3 @@
-[user]
-    name = Florian Hild
-    email =  florian.hild@gmail.com
-	signingKey = 73F00258B69A6438
 [core]
     editor = vim
     # Linux

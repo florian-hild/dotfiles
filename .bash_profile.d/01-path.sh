@@ -11,6 +11,7 @@ if [[ "$(uname -s)" == "Darwin" ]]; then
   mac_paths=(
     "/usr/local/opt/gnu-getopt/bin"
     "/usr/local/opt/coreutils/bin"
+    "/usr/local/opt/coreutils/libexec/gnubin"
   )
 fi
 

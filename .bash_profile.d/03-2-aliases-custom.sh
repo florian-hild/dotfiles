@@ -15,3 +15,7 @@ alias ports="ss -tulpn"
 function historyf { history|grep -in "$1" --color; }
 alias myhelp='echo lstoday; echo "findname <word>"; echo "pscpu"; echo "psram"; echo "psme"; echo "findhost <word>"; echo "mygrep <word>"; echo "pingf <host>"; echo "historyf <word>";'
 function activate { if [[ -z "${1// }" ]]; then source $PWD/.venv/bin/activate; else source ~/project/python_venv/${1}/bin/activate; fi; }
+
+# Docker:
+alias dps='docker ps --all --format "table {{.Names}}\t{{.Image}}\t{{.Status}}"'
+alias dshell='docker exec --interactive --tty'
