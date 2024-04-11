@@ -8,6 +8,9 @@ HISTTIMEFORMAT="|%Y-%m-%d %H:%M| "
 PROMPT_COMMAND="history -a"
 HISTCONTROL="ignoreboth"
 
-if [[ $(/bin/df --output=fstype . | sed 1d) =~ nfs ]]; then
+if [[ $(stat -f -L -c %T ${HOME}) =~ nfs ]]; then
   HISTFILE="${HOME}/.bash_history_$(hostname -s)"
+else
+  HISTFILE="${HOME}/.bash_history"
 fi
+
