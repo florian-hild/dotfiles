@@ -1,4 +1,4 @@
-[core]
+[1111111core]
     editor = vim
     # Linux
     autocrlf = input
@@ -55,8 +55,6 @@
     helper = !/usr/bin/gh auth git-credential
 [branch]
     sort = -committerdate
-[commit]
-	gpgSign = true
 [gpg]
 	program = gpg
 [rebase]
