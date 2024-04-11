@@ -12,7 +12,7 @@ pssupcist() { ps -wwfo pid,user,group,%cpu,%mem,stat,atime,start,args --group su
 distribute() { ssh root@vmadmin "cd /usr/local/admin/distribute_user_key/ && ./distribute.pl $@"; }
 
 # Oracle
-export SQL_SCRIPTS="{HOME}/.dotfiles/oracle/sql"
+export SQL_SCRIPTS="${HOME}/.dotfiles/oracle/sql"
 export SQLPATH="${SQL_SCRIPTS}:${SQL_SCRIPTS}/asm:${SQL_SCRIPTS}/dba:${SQL_SCRIPTS}/sup:${SQL_SCRIPTS}/tools:${SQL_SCRIPTS}/user:${SQLPATH}"
 alias SQL="pwd=\$PWD; cd ${SQL_SCRIPTS}; \$SQL && cd \$pwd"
 alias SQLDBA="pwd=\$PWD; cd ${SQL_SCRIPTS}; \$SQLDBA && cd \$pwd"
