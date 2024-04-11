@@ -1,0 +1,1 @@
+../dba/invalid_objects.sql
