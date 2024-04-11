@@ -1,4 +1,5 @@
 # My aliases
+
 alias showaliases="alias|cut -d'=' -f1"
 alias lstoday="ls -al --time-style=+%D | grep --color=none $(date +%D)"
 alias findname="find -print -iname "
@@ -12,10 +13,8 @@ function findhost { grep -i "$1" ~/.ssh/config --color; }
 function mygrep { grep -rnIi "$1" . --color; }
 alias pingf="ping -c4 -i0.3 -W0.1 -w2"
 alias ports="ss -tulpn"
+alias ssh_non_sock="ssh -S none "
+alias smbshares="smbclient -L \\\\localhost -N"
 function historyf { history|grep -in "$1" --color; }
 alias myhelp='echo lstoday; echo "findname <word>"; echo "pscpu"; echo "psram"; echo "psme"; echo "findhost <word>"; echo "mygrep <word>"; echo "pingf <host>"; echo "historyf <word>";'
 function activate { if [[ -z "${1// }" ]]; then source $PWD/.venv/bin/activate; else source ~/project/python_venv/${1}/bin/activate; fi; }
-
-# Docker:
-alias dps='docker ps --all --format "table {{.Names}}\t{{.Image}}\t{{.Status}}"'
-alias dshell='docker exec --interactive --tty'

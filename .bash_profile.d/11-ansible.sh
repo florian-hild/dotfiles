@@ -9,7 +9,7 @@ if [[ -n "${ANSIBLE// }" ]]; then
   export ROLES="${ANSIBLE}/roles"
   export ROLESWIP="${ANSIBLE}/roles_wip"
 
-  alias setansible="source ~/project/python_venv/ansible/bin/activate"
+  alias setansible="source ${HOME}/project/python_venv/ansible/bin/activate"
 
   function ansible_test(){
     setansible

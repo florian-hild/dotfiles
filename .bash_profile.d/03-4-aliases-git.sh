@@ -1,5 +1,4 @@
 # git
-alias commit_messages='echo "add: :rocket:"; echo "delete: :x:"; echo "update: :arrow_up:"; echo "rename: :truck:"; echo "feature: :sparkles:"; echo "fix: :adhesive_bandage:";echo "revert: :rewind:"; echo "refactor: :hammer:"; echo "docs: :books:"; echo "style: :art:"; echo "format: :triangular_ruler:"; echo "test: :white_check_mark:"; echo "perf: :racehorse:"; echo "ci: :construction_worker:"; echo "sec: :lock:"; echo "init: first commit :tada:"'
 if ! uname -r | sed 's/^.*\(el[0-9]\+\).*$/\1/' | command grep -q -i "el5"; then
   function gc-add { git commit -m "add: ${*:-'add file'} :rocket:"; }
   function gc-delete { git commit -m "delete: ${*:-'remove file'} :x:"; }
@@ -18,10 +17,3 @@ if ! uname -r | sed 's/^.*\(el[0-9]\+\).*$/\1/' | command grep -q -i "el5"; then
   function gc-sec { git commit -m "sec: ${*:-'improve security'} :lock:"; }
   function gc-init { git commit --allow-empty -m "init: ${*:-'first commit'} :tada:"; }
 fi
-
-# github cli
-alias pr-mueller='gh pr create --reviewer bernd-mueller-1 --assignee florian-hild-1,bernd-mueller-1 --fill'
-alias pr-scheub='gh pr create --reviewer Manuel-Scheub --assignee florian-hild-1,Manuel-Scheub --fill'
-alias pr-woelk='gh pr create --reviewer fabian-woelk-1 --assignee florian-hild-1,fabian-woelk-1 --fill'
-alias pr-seggelmann='gh pr create --reviewer robin-seggelmann --assignee florian-hild-1,robin-seggelmann --fill'
-alias pr-ansible='gh pr create --reviewer bernd-mueller-1,Manuel-Scheub,fabian-woelk-1 --assignee florian-hild-1,bernd-mueller-1,Manuel-Scheub,fabian-woelk-1 --fill'
