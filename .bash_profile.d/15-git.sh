@@ -1,4 +1,5 @@
 # git
+
 if ! uname -r | sed 's/^.*\(el[0-9]\+\).*$/\1/' | command grep -q -i "el5"; then
   function gc-add { git commit -m "add: ${*:-'add file'} :rocket:"; }
   function gc-delete { git commit -m "delete: ${*:-'remove file'} :x:"; }
