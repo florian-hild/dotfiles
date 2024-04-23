@@ -1,4 +1,4 @@
-[1111111core]
+[core]
     editor = vim
     # Linux
     autocrlf = input
@@ -29,22 +29,22 @@
 [alias]
     a = add -v
     b = branch -va
-    bb = !git for-each-ref --color --sort=-committerdate --format=$'%(color:red)%(ahead-behind:HEAD)\t%(color:blue)%(refname:short)\t%(color:yellow)%(committerdate:relative)\t%(color:default)%(describe)' refs/heads/ | sed 's/ /\t/' | column --separator=$'\t' --table --table-columns='Ahead,Behind,Branch Name,Last Commit,Description'
-    db = !"git branch --merged | grep -vE 'main|master|\\*' | xargs -n 1 git branch -D"
-    lg = log --all --color --graph --abbrev-commit --pretty=format:'%C(yellow)%h %Cred%ad %Cblue%an%Cgreen%d %Creset%s' --date=format:'%Y-%m-%d %H:%M'
-    lgg = log  --all --color --graph --abbrev-commit --pretty=format:'%C(yellow)%h %Cred%ad %Cblue%an%Cgreen%d %Creset%s' --date=format:'%Y-%m-%d %H:%M' --name-status
-    lgf = log --all --color --graph --abbrev-commit --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --date=relative -p
-    st = status --short
+    bb = !"git for-each-ref --color --sort=-committerdate --format=$'%(color:red)%(ahead-behind:HEAD)\t%(color:blue)%(refname:short)\t%(color:yellow)%(committerdate:relative)\t%(color:default)%(describe)' refs/heads/ | sed 's/ /\t/' | column --separator=$'\t' --table --table-columns='Ahead,Behind,Branch Name,Last Commit,Description'"
     co = checkout
-    pl = pull --rebase
     d = diff --staged
-    f = fetch --all -Pp
+    db = !"git branch --merged | grep -vE 'main|master|\\*' | xargs -n 1 git branch -D"
     dh = diff HEAD
+    f = fetch --all -Pp
+    lg = log --all --color --graph --abbrev-commit --pretty=format:'%C(yellow)%h %Cred%ad %Cblue%an%Cgreen%d %Creset%s' --date=format:'%Y-%m-%d %H:%M'
+    lgf = log --all --color --graph --abbrev-commit --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --date=relative -p
+    lgg = log  --all --color --graph --abbrev-commit --pretty=format:'%C(yellow)%h %Cred%ad %Cblue%an%Cgreen%d %Creset%s' --date=format:'%Y-%m-%d %H:%M' --name-status
     pb = push -u origin HEAD
+    pl = pull --rebase
+    st = status --short
+    staash = stash --all
     w = worktree
     wl = worktree list
     wr = worktree remove
-    staash = stash --all
 [rerere]
 	enabled = true
 [init]
