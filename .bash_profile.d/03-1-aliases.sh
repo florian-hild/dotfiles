@@ -1,6 +1,6 @@
 # Set aliases
 
-alias ll="ls -lh --color"
+alias ll="ls -lh --color --time-style=long-iso"
 alias ls="ls -h --color"
 alias grep="grep --color"
 alias rm="rm -i"
