@@ -28,11 +28,12 @@
     whitespace = red reverse
 [alias]
     a = add -v
+    alias = git config --get-regexp ^alias
     b = branch -va
     bb = !"git for-each-ref --color --sort=-committerdate --format=$'%(color:red)%(ahead-behind:HEAD)\t%(color:blue)%(refname:short)\t%(color:yellow)%(committerdate:relative)\t%(color:default)%(describe)' refs/heads/ | sed 's/ /\t/' | column --separator=$'\t' --table --table-columns='Ahead,Behind,Branch Name,Last Commit,Description'"
     co = checkout
     d = diff --staged
-    db = !"git fetch --all --prune; git branch -vv | awk '/: gone]/{print $1}' | xargs git branch -D;"
+    db = !"git fetch --all --prune; git branch -vv | awk '/: gone]/{print $1}' | grep -v '+' | xargs git branch -D;"
     dh = diff HEAD
     f = fetch --all -Pp
     lg = log --all --color --graph --abbrev-commit --pretty=format:'%C(yellow)%h %Cred%ad %Cblue%an%Cgreen%d %Creset%s' --date=format:'%Y-%m-%d %H:%M'
