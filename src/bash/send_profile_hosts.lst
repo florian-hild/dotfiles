@@ -35,7 +35,8 @@ hosts=(
     boerner
     eickhoff-test
     eickhoff
-    kraenzle
+    kraenzle1
+    kraenzle2
     fega
     fega-test
     scm-neu
