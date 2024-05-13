@@ -53,3 +53,6 @@ ln -sfn ${DOT_PATH}/.vimrc ${HOME}/.vimrc
 ln -sfn ${DOT_PATH}/.digrc ${HOME}/.digrc
 ln -sfn ${DOT_PATH}/.tmux.conf ${HOME}/.tmux.conf
 ln -sfn ${DOT_PATH}/.tmux.conf.local ${HOME}/.tmux.conf.local
+
+[[ ! -d ${HOME}/bin ]] && ln -sn ${DOT_PATH}/bin ${HOME}/bin
+
