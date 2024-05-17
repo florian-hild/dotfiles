@@ -20,7 +20,8 @@ filetype indent on
 syntax on
 
 " Add numbers to each line on the left-hand side.
-set nonumber
+set number
+set relativenumber
 
 " Highlight cursor line underneath the cursor horizontally.
 set cursorline
@@ -174,6 +175,14 @@ augroup END
 
 " turn off search highlight mit leertaste
 nnoremap <leader><space> :nohlsearch<CR>
+
+" center screen after moving half page down and up
+nnoremap <C-d> <C-d>zz
+nnoremap <C-u> <C-u>zz
+
+" Center search findings
+nnoremap n nzzzv
+nnoremap N Nzzzv
 
 " allows cursor change in tmux mode
 " These lines change the cursor from block cursor mode to vertical bar cursor mode when using tmux.
