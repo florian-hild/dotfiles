@@ -24,7 +24,7 @@ set number
 set relativenumber
 
 " Highlight cursor line underneath the cursor horizontally.
-set cursorline
+set nocursorline
 
 " Set color schema
 colorscheme desert
