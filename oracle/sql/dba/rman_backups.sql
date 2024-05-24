@@ -1,3 +1,9 @@
+--------------------------------------------------------------------------------
+-- Author     : Florian Hild
+-- Created    : 24-05-2024
+-- Description:
+--------------------------------------------------------------------------------
+
 set linesize 250
 set pagesize 1000
 alter session set nls_date_format='DD-MON-YYYY HH24:MI:SS';

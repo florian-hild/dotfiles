@@ -1,3 +1,9 @@
+--------------------------------------------------------------------------------
+-- Author     : Florian Hild
+-- Created    : 24-05-2024
+-- Description:
+--------------------------------------------------------------------------------
+
 set termout off
 set linesize 250
 set pagesize 2000
@@ -7,3 +13,4 @@ COLUMN X NEW_VALUE Y
 SELECT LOWER(USER || '@' || SYS_CONTEXT('userenv', 'instance_name')) X FROM dual;
 SET SQLPROMPT '&Y SQL> '
 set termout on
+
