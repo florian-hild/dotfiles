@@ -44,4 +44,7 @@ hosts=(
     noerdlinger
     demo
     demo-test
+    hermes1
+    hermes2
+    hermes3
 )
