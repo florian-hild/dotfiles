@@ -1,0 +1,1 @@
+../src/bash/supcis_proc_mem.sh
