@@ -39,8 +39,8 @@ hosts=(
     kraenzle2
     fega
     fega-test
-    scm-neu
-    scm-test
+    # scm-neu
+    # scm-test
     noerdlinger
     demo
     demo-test
