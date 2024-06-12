@@ -26,6 +26,7 @@ Options:
   --supcis-proccesses <proc,proc> Set supcis processes to check
   --no-header                     Don't print csv header (useful for append to file)
   -p, --pids <pid,pid>            Set pids to check
+  --timestamp                     Print timestamp (Always shown in CSV mode)
   -u, --user <username>           Set process user
   -v, --verbose                   Print debugging messages
   -V, --version                   Display version and exit
@@ -64,12 +65,12 @@ set_supcis_environment() {
 # Modes: pid (can be comma seperated values), user, supcis or all
 get_process_info() {
   local -r mode="${1}"
-  local ps_cmd="/usr/bin/ps --no-headers -o uname,pid,cputime,%cpu,%mem,rss,vsz,stat,args --sort=+rss"
+  local ps_cmd="/usr/bin/ps --no-headers -ww -o uname,pid,cputime,%cpu,%mem,rss,vsz,stat,args --sort=+rss"
 
   case "${mode}" in
     all)  ps_cmd+=" -e" ;;
-    pid)  ps_cmd+=" -p ${pids}" ;;
-    user) ps_cmd+=" -U ${user}" ;;
+    pid)  ps_cmd+=" --pid ${pids}" ;;
+    user) ps_cmd+=" --user ${user}" ;;
     supcis)
       set_supcis_environment
 
@@ -92,9 +93,22 @@ get_process_info() {
   if [[ -z "${no_header// }" ]]; then
     # Print header
     if [[ -n "${csv// }" ]]; then
-      echo 'TIMESTAMP;SC_NAME;USER;PID;TIME;%CPU;%MEM;RSS;VSZ;STAT;COMMAND'
+      # Only show header column if mode supcis
+      if [[ "${mode}" == "supcis" ]]; then
+        local -r SC_NAME_HEADER='SC_NAME;'
+      fi
+      echo "TIMESTAMP;${SC_NAME_HEADER}USER;PID;TIME;%CPU;%MEM;RSS;VSZ;STAT;COMMAND"
     else
-      echo 'TIMESTAMP        SC_NAME USER         PID     TIME %CPU %MEM   RSS    VSZ STAT COMMAND'
+      if [[ -n "${timestamp// }" ]]; then
+        local -r timestamp_header='TIMESTAMP        '
+      fi
+
+      # Only show header column if mode supcis
+      if [[ "${mode}" == "supcis" ]]; then
+        local -r SC_NAME_HEADER='SC_NAME '
+      fi
+      echo "${timestamp_header}${SC_NAME_HEADER}USER         PID     TIME %CPU %MEM   RSS    VSZ STAT COMMAND"
+      echo '------------------------------------------------------------------------------------------'
     fi
 
   fi
@@ -114,18 +128,32 @@ get_process_info() {
 
 
 
-      printf "$(date +'%F %H-%M');%s;%s;%s;%s;%s;%s;%s;%s;%s;%s\n" "${supcis_proc_map[${pid}]}" "${username}" "${pid}" "${time}" "${cpu_pct}" "${mem_pct}" "${rss}" "${vsz}" "${stat}" "${command}"
+      # Only show header column if mode supcis
+      if [[ "${mode}" == "supcis" ]]; then
+        printf "$(date +'%F %H-%M');%s;%s;%s;%s;%s;%s;%s;%s;%s;%s\n" "${supcis_proc_map[${pid}]}" "${username}" "${pid}" "${time}" "${cpu_pct}" "${mem_pct}" "${rss}" "${vsz}" "${stat}" "${command}"
+      else
+        printf "$(date +'%F %H-%M');%s;%s;%s;%s;%s;%s;%s;%s;%s\n" "${username}" "${pid}" "${time}" "${cpu_pct}" "${mem_pct}" "${rss}" "${vsz}" "${stat}" "${command}"
+      fi
     done
   else
     # Print in human readable format
+    if [[ -n "${timestamp// }" ]]; then
+      local -r timestamp_value="$(date +'%F %H-%M') "
+    fi
+
     for ps_line in "${ps_output[@]}"; do
       local pid="$(echo "${ps_line}"      | tr -s ' ' | cut -d' ' -f2)"
       local rss="$(echo "${ps_line}"      | tr -s ' ' | cut -d' ' -f6)"
       local proc_rss_total=$(expr ${proc_rss_total} + ${rss})
 
-      printf "$(date +'%F %H-%M') %-7s %s\n" "${supcis_proc_map[${pid}]}" "${ps_line}"
+      # Only show header column if mode supcis
+      if [[ "${mode}" == "supcis" ]]; then
+        printf "${timestamp_value}%-7s %s\n" "${supcis_proc_map[${pid}]}" "${ps_line}"
+      else
+        printf "${timestamp_value}%s\n" "${ps_line}"
+      fi
     done
-    echo '================================================================================'
+    echo '=========================================================================================='
     echo "Total RSS: ${proc_rss_total} kB"
   fi
 
@@ -141,7 +169,7 @@ if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
       help 128
     fi
 
-    OPTS="$(getopt -o 'chp:u:vV' --long 'csv,help,supcis-env:,supcis-proccesses:,no-header,pids:,user:,verbose,version' -n "${0}" -- "${@}")"
+    OPTS="$(getopt -o 'chp:u:vV' --long 'csv,help,supcis-env:,supcis-proccesses:,no-header,pids:,timestamp,user:,verbose,version' -n "${0}" -- "${@}")"
     if [[ "${?}" != "0" ]] ; then
       echo "Syntax or usage error (2)" >&2
       echo
@@ -175,6 +203,10 @@ if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
         declare -r pids="${2}"
         shift 2
         ((main_opts_set++))
+        ;;
+      --timestamp)
+        declare -r timestamp="1"
+        shift
         ;;
       -u | --user)
         declare -r user="${2}"
