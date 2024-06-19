@@ -1,14 +1,11 @@
 #!/usr/bin/perl -w
 package SUP::Project_name::Modul_name;
 
-################################################################################
-# Kurzbeschr. :
-# Entwickler  : F.Hild
-# Datum       :
-# Ablageort   : lib Ordner des jeweiligen Projectes
-# Git-Repo    :
-# Beschreibung:
-################################################################################
+#-------------------------------------------------------------------------------
+# Author     : Florian Hild
+# Created    : dd-mm-yyyy
+# Description:
+#-------------------------------------------------------------------------------
 
 use strict;
 use warnings;
