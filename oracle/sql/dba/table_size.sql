@@ -13,8 +13,12 @@ col OBJECT_NAME format a30
 col TABLESPACE_NAME format a20
 col SEGMENT_TYPE format a15
 
-SELECT OWNER,SEGMENT_NAME,SEGMENT_TYPE,TABLESPACE_NAME,BYTES / 1024 / 1024 "Size in MB",EXTENTS
-  FROM dba_segments
-  WHERE OWNER not in ('SYS')
-  AND (BYTES > (1024 * 1024 * 1024) OR EXTENTS > 1)
-  ORDER BY bytes ASC;
+SELECT seg.OWNER,seg.SEGMENT_NAME,seg.SEGMENT_TYPE,seg.TABLESPACE_NAME,seg.BYTES / 1024 / 1024 "Size in MB",tab.NUM_ROWS,seg.EXTENTS
+  FROM dba_segments seg, all_tables tab
+  WHERE seg.OWNER = tab.OWNER
+  AND seg.SEGMENT_NAME = tab.TABLE_NAME
+  AND seg.OWNER not in ('SYS')
+  AND (seg.BYTES > (1024 * 1024 * 1024) OR seg.EXTENTS > 1)
+  ORDER BY seg.bytes ASC;
+
+
