@@ -35,23 +35,3 @@ FROM   v$locked_object lo
        JOIN v$session s ON lo.session_id = s.sid
 ORDER BY OBJECT_OWNER,OBJECT_NAME,CLIENT_IDENTIFIER ASC;
 
-
--- set wrap on
--- set long 1000000000
-
--- col OBJECT_NAME  format a25
--- col SID          format 99999
--- col SERIAL#      format 999999
--- col SPID         format a10
--- col PROGRAM      format a60
--- col USERNAME     format a16
--- col SQL_FULLTEXT format a300
-
--- SELECT O.OBJECT_NAME, S.SID, S.SERIAL#, P.SPID, S.PROGRAM, S.USERNAME, SQ.SQL_FULLTEXT
---   FROM V$LOCKED_OBJECT L, DBA_OBJECTS O, V$SESSION S, V$PROCESS P, V$SQL SQ
---   WHERE L.OBJECT_ID = O.OBJECT_ID
---   AND L.SESSION_ID = S.SID
---   AND S.PADDR = P.ADDR
---   AND S.SQL_ADDRESS = SQ.ADDRESS
---   ORDER BY S.USERNAME,O.OBJECT_NAME ASC;
-
