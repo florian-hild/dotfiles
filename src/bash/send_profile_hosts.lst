@@ -47,4 +47,6 @@ hosts=(
     hermes1
     hermes2
     hermes3
+    breuninger
+    breuninger-test
 )
