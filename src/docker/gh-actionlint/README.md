@@ -2,7 +2,7 @@
 
 Lint GitHub actions
 
-Source: [rhysd/actionlint]{https://github.com/rhysd/actionlint}
+Source: [rhysd/actionlint](https://github.com/rhysd/actionlint)
 
 # Build Docker image locally
 ```bash
