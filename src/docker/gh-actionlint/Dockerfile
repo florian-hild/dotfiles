@@ -10,6 +10,7 @@ RUN addgroup --gid 10001 actionlint && \
     chown -R actionlint:actionlint /work
 
 WORKDIR /work
+USER actionlint:actionlint
 
 ENTRYPOINT ["actionlint"]
 
