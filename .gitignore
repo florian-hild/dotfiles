@@ -1,3 +1,5 @@
 .vim/.netrwhist
 .bash_profile.d/30-sup.sh
 .venv
+src/c/**/bin
+src/c/**/obj
