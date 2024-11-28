@@ -1,3 +1,17 @@
+## Local .gitconfig example
+
+# [user]
+#   name = Florian Hild
+#   email = florian.hild@...
+#   signingKey = key_name
+
+# [commit]
+#   gpgSign = true
+
+# [include]
+#   path = /home/hild/.dotfiles/.gitconfig
+
+
 [core]
     editor = vim
     # Linux
