@@ -19,7 +19,7 @@ function ansible-playbook(){
     --env VAULT_PASSWORD="${VAULT_PASSWORD}" \
     --env WORK_PATH="/ansible/${PWD#*ansible/}" \
     --name ansible-worker-$(date +'%Y%m%d_%H%M%S') \
-    local/ansible:${ANSIBLE_DEFAULT_VERSION} \
+    local/ansible:${ANSIBLE_DEFAULT_VERSION-"latest"}-alpine \
     bash -c "ansible-playbook \${WORK_PATH}/${ansible_playbook_args}"
 }
 
@@ -37,7 +37,7 @@ function ansible-lint(){
       --env VAULT_PASSWORD="${VAULT_PASSWORD}" \
       --env LINT_CONFIG_FILE="/ansible/${work_path_suffix%%/*}/.yamllint" \
       --name ansible-worker-$(date +'%Y%m%d_%H%M%S') \
-      local/ansible:${ANSIBLE_DEFAULT_VERSION} \
+      local/ansible:${ANSIBLE_DEFAULT_VERSION:-"latest"}-alpine \
       bash -c "set -x && find ${lint_target} -type f \( -name '*.yaml' -o -name '*.yml' \) -exec yamllint -c \${LINT_CONFIG_FILE} {} +"
 
     echo "Linting using ansible-lint..."
