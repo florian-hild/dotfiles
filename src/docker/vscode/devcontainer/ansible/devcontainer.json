@@ -1,0 +1,12 @@
+{
+    "name": "ansible-dev-container",
+    "image": "local/ansible:latest",
+    "runArgs": ["--name=vscode-dev-container-ansible"],
+    "extensions": [
+        "redhat.ansible",
+        "redhat.vscode-yaml",
+        "samuelcolvin.jinjahtml",
+        "yzhang.markdown-all-in-one",
+        "eamodio.gitlens"
+    ]
+}
