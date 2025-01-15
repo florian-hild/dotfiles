@@ -30,7 +30,7 @@ COPY requirements.yml .
 ENV PATH="/home/ansible/.local/bin:${PATH}"
 RUN <<EOF
 python3 -m pip install --no-cache --user -r requirements.txt
-rm -rf /tmp/pip-reqs-* /root/.cache/pip/*
+rm -rf /tmp/pip-reqs-* /ansible/.cache/pip/*
 ansible-galaxy install -r requirements.yml
 EOF
 
