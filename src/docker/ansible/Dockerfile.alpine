@@ -1,0 +1,69 @@
+FROM python:3.13-alpine
+
+ARG ANSIBLE_VERSION=latest
+
+ENV LANG=C.UTF-8
+
+# Install system packages
+RUN <<EOF
+apk update
+apk add --no-cache bash openssh-client
+rm -rf /var/cache/apk/*
+EOF
+
+# Add user and group
+RUN <<EOF
+addgroup --system ansible
+adduser --disabled-password --system --shell /bin/bash \
+        --home /home/ansible --ingroup ansible ansible
+mkdir -p /home/ansible/.ssh /tmp/.ansible
+chown ansible:ansible /home/ansible/.ssh /tmp/.ansible
+EOF
+
+# Switch to app user
+USER ansible
+
+# Install Ansible
+COPY requirements_ansible-${ANSIBLE_VERSION}.txt requirements.txt
+COPY requirements.yml .
+
+ENV PATH="/home/ansible/.local/bin:${PATH}"
+RUN <<EOF
+python3 -m pip install --no-cache --user -r requirements.txt
+rm -rf /tmp/pip-reqs-* /root/.cache/pip/*
+ansible-galaxy install -r requirements.yml
+EOF
+
+# Configure Ansible
+ENV ANSIBLE_REMOTE_TEMP=/tmp/.ansible
+ENV ANSIBLE_FORCE_COLOR=True
+ENV ANSIBLE_CONFIG=/home/ansible/ansible.cfg
+
+# Generate Ansible vault password file
+COPY <<EOF /home/ansible/.vault_pass.sh
+#!/bin/bash
+echo "\${VAULT_PASSWORD}"
+exit
+EOF
+
+# Generate Ansible config file
+COPY <<EOF /home/ansible/ansible.cfg
+[defaults]
+inventory=/ansible/environments/test/
+roles_path=/ansible/roles_wip:/ansible/roles
+collections_path=/ansible/ansible_collections_wip:/ansible/ansible_collections
+remote_user=ansible
+vault_password_file=/home/ansible/.vault_pass.sh
+host_key_checking=False
+display_skipped_hosts=False
+deprecation_warnings=True
+nocows=True
+private_key_file=~/.ssh/id_ed25519_ansible_vmadmin
+# Human-readable output
+stdout_callback=yaml
+EOF
+
+# Make sure we use the virtualenv
+SHELL ["/bin/bash", "-c"]
+WORKDIR /ansible
+CMD ["ansible", "--version"]
