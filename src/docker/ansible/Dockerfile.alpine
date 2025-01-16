@@ -14,7 +14,7 @@ EOF
 # Add user and group
 RUN <<EOF
 addgroup --system ansible
-adduser --disabled-password --system --shell /bin/bash \
+adduser --disabled-password --system --shell /bin/bash --uid 1000 \
         --home /home/ansible --ingroup ansible ansible
 mkdir -p /home/ansible/.ssh /tmp/.ansible
 chown ansible:ansible /home/ansible/.ssh /tmp/.ansible
@@ -24,14 +24,12 @@ EOF
 USER ansible
 
 # Install Ansible
-COPY requirements_ansible-${ANSIBLE_VERSION}.txt requirements.txt
-COPY requirements.yml .
-
+# Set PATH to user bin used by pip
 ENV PATH="/home/ansible/.local/bin:${PATH}"
-RUN <<EOF
-python3 -m pip install --no-cache --user -r requirements.txt
+RUN --mount=type=bind,source=requirements_ansible-${ANSIBLE_VERSION}.txt,target=/tmp/requirements.txt --mount=type=bind,source=requirements.yml,target=/tmp/requirements.yml <<EOF
+python3 -m pip install --no-cache --user -r /tmp/requirements.txt
 rm -rf /tmp/pip-reqs-* /ansible/.cache/pip/*
-ansible-galaxy install -r requirements.yml
+ansible-galaxy install -r tmp/requirements.yml
 EOF
 
 # Configure Ansible
@@ -40,14 +38,14 @@ ENV ANSIBLE_FORCE_COLOR=True
 ENV ANSIBLE_CONFIG=/home/ansible/ansible.cfg
 
 # Generate Ansible vault password file
-COPY <<EOF /home/ansible/.vault_pass.sh
+COPY --chown=root:ansible --chmod=0650 <<EOF /home/ansible/.vault_pass.sh
 #!/bin/bash
 echo "\${VAULT_PASSWORD}"
 exit
 EOF
 
 # Generate Ansible config file
-COPY <<EOF /home/ansible/ansible.cfg
+COPY --chown=root:root --chmod=0644 <<EOF /home/ansible/ansible.cfg
 [defaults]
 inventory=/ansible/environments/test/
 roles_path=/ansible/roles_wip:/ansible/roles
