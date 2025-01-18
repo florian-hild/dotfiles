@@ -1,0 +1,24 @@
+{
+  "name": "golang-dev-container",
+  "image": "golang:1.23-alpine",
+  "mounts": [
+    {
+      "source": "/etc/localtime",
+      "target": "/etc/localtime",
+      "type": "bind"
+    }
+  ],
+  "postCreateCommand": "apk update && apk add --no-cache git curl make",
+  "forwardPorts": [8080],
+  "runArgs": ["--name=vscode-dev-container-golang"],
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "golang.go",
+        "vscode.makefile-tools",
+        "yzhang.markdown-all-in-one",
+        "eamodio.gitlens"
+      ]
+    }
+  }
+}
