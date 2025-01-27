@@ -7,7 +7,7 @@ ENV LANG=C.UTF-8
 # Install system packages
 RUN <<EOF
 apk update
-apk add --no-cache bash openssh-client
+apk add --no-cache bash openssh-client git
 rm -rf /var/cache/apk/*
 EOF
 
@@ -33,9 +33,9 @@ ansible-galaxy install -r tmp/requirements.yml
 EOF
 
 # Configure Ansible
-ENV ANSIBLE_REMOTE_TEMP=/tmp/.ansible
-ENV ANSIBLE_FORCE_COLOR=True
-ENV ANSIBLE_CONFIG=/home/ansible/ansible.cfg
+ENV ANSIBLE_REMOTE_TEMP=/tmp/.ansible \
+    ANSIBLE_FORCE_COLOR=True \
+    ANSIBLE_CONFIG=/home/ansible/ansible.cfg
 
 # Generate Ansible vault password file
 COPY --chown=root:ansible --chmod=0650 <<EOF /home/ansible/.vault_pass.sh
@@ -59,6 +59,8 @@ nocows=True
 private_key_file=~/.ssh/id_ed25519_ansible_vmadmin
 # Human-readable output
 stdout_callback=yaml
+fact_caching=jsonfile
+fact_caching_connection=/ansible/cache
 EOF
 
 # Make sure we use the virtualenv
