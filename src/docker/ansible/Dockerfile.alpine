@@ -26,8 +26,8 @@ USER ansible
 # Install Ansible
 # Set PATH to user bin used by pip
 ENV PATH="/home/ansible/.local/bin:${PATH}"
-RUN --mount=type=bind,source=requirements_ansible-${ANSIBLE_VERSION}.txt,target=/tmp/requirements.txt --mount=type=bind,source=requirements.yml,target=/tmp/requirements.yml <<EOF
-python3 -m pip install --no-cache --user -r /tmp/requirements.txt
+RUN --mount=type=bind,source=requirements_ansible-${ANSIBLE_VERSION}_alpine.txt,target=/tmp/requirements.txt --mount=type=bind,source=requirements.yml,target=/tmp/requirements.yml <<EOF
+python3 -m pip install --no-cache -r /tmp/requirements.txt
 rm -rf /tmp/pip-reqs-* /ansible/.cache/pip/*
 ansible-galaxy install -r tmp/requirements.yml
 EOF

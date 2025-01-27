@@ -1,0 +1,4 @@
+ansible
+yamllint
+ansible-lint
+# ansible-navigator
