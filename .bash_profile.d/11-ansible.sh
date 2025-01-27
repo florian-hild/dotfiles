@@ -9,12 +9,25 @@ if [[ -n "${ANSIBLE// }" ]]; then
   export ROLES="${ANSIBLE}/roles"
   export ROLESWIP="${ANSIBLE}/roles_wip"
 
+function ansible(){
+    local ansible_args="${@}"
+    docker run \
+    --rm \
+    --init \
+    --volume ~/.ssh/${ANSIBLE_DEFAULT_SSH_KEY-"id_ed25519"}:/home/ansible/.ssh/${ANSIBLE_DEFAULT_SSH_KEY-"id_ed25519"}:ro \
+    --volume ~/project/ansible:/ansible:ro \
+    --env VAULT_PASSWORD="${VAULT_PASSWORD}" \
+    --name ansible-worker-$(date +'%Y%m%d_%H%M%S') \
+    local/ansible:${ANSIBLE_DEFAULT_VERSION-"latest"}-alpine \
+    bash -c "ansible ${ansible_args}"
+}
+
 function ansible-playbook(){
     local ansible_playbook_args="${@}"
     docker run \
     --rm \
     --init \
-    --volume ~/.ssh/id_ed25519_ansible_vmadmin:/home/ansible/.ssh/id_ed25519_ansible_vmadmin:ro \
+    --volume ~/.ssh/${ANSIBLE_DEFAULT_SSH_KEY-"id_ed25519"}:/home/ansible/.ssh/${ANSIBLE_DEFAULT_SSH_KEY-"id_ed25519"}:ro \
     --volume ~/project/ansible:/ansible:ro \
     --env VAULT_PASSWORD="${VAULT_PASSWORD}" \
     --env WORK_PATH="/ansible/${PWD#*ansible/}" \
@@ -38,7 +51,7 @@ function ansible-lint(){
       --env LINT_CONFIG_FILE="/ansible/${work_path_suffix%%/*}/.yamllint" \
       --name ansible-worker-$(date +'%Y%m%d_%H%M%S') \
       local/ansible:${ANSIBLE_DEFAULT_VERSION:-"latest"}-alpine \
-      bash -c "set -x && find ${lint_target} -type f \( -name '*.yaml' -o -name '*.yml' \) -exec yamllint -c \${LINT_CONFIG_FILE} {} +"
+      bash -c "find ${lint_target} -type f \( -name '*.yaml' -o -name '*.yml' \) -exec yamllint -c \${LINT_CONFIG_FILE} {} +"
 
     echo "Linting using ansible-lint..."
     docker run \
@@ -48,7 +61,7 @@ function ansible-lint(){
       --env VAULT_PASSWORD="${VAULT_PASSWORD}" \
       --env LINT_CONFIG_FILE="/ansible/${work_path_suffix%%/*}/.ansible-lint" \
       --name ansible-worker-$(date +'%Y%m%d_%H%M%S') \
-      local/ansible:${ANSIBLE_DEFAULT_VERSION} \
-      bash -c "set -x && ansible-lint --format brief --config-file \${LINT_CONFIG_FILE} ${lint_target}"
+      local/ansible:${ANSIBLE_DEFAULT_VERSION:-"latest"}-alpine \
+      bash -c "ansible-lint --format brief --config-file \${LINT_CONFIG_FILE} ${lint_target}"
 }
 fi
