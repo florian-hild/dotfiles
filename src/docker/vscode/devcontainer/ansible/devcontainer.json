@@ -1,12 +1,28 @@
 {
     "name": "ansible-dev-container",
-    "image": "local/ansible:latest",
+    "image": "local/ansible:latest-debian",
     "runArgs": ["--name=vscode-dev-container-ansible"],
+     "mounts": [
+        "target=/ansible/.vscode-server,type=volume",
+        "source=vscode-ansible-profile,target=/home/ansible,type=volume"
+    ],
     "extensions": [
         "redhat.ansible",
         "redhat.vscode-yaml",
         "samuelcolvin.jinjahtml",
         "yzhang.markdown-all-in-one",
-        "eamodio.gitlens"
-    ]
+        "eamodio.gitlens",
+        "zhuangtongfa.material-theme"
+    ],
+    "settings": {
+        "editor.suggestSelection": "first",
+        "ansible.lightspeed.enabled": false,
+        "ansible.lightspeed.suggestions.enabled": false,
+        "terminal.integrated.defaultProfile.linux": "bash",
+        "terminal.integrated.profiles.linux": {
+            "bash": {
+                "path": "/bin/bash"
+            }
+        }
+    }
 }
