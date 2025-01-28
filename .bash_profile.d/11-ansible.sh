@@ -9,7 +9,7 @@ if [[ -n "${ANSIBLE// }" ]]; then
   export ROLES="${ANSIBLE}/roles"
   export ROLESWIP="${ANSIBLE}/roles_wip"
 
-function ansible(){
+function ansible-container(){
     local ansible_args="${@}"
     docker run \
     --rm \
@@ -19,7 +19,7 @@ function ansible(){
     --env VAULT_PASSWORD="${VAULT_PASSWORD}" \
     --name ansible-worker-$(date +'%Y%m%d_%H%M%S') \
     local/ansible:${ANSIBLE_DEFAULT_VERSION-"latest"}-alpine \
-    bash -c "ansible ${ansible_args}"
+    bash -c "${ansible_args}"
 }
 
 function ansible-playbook(){
