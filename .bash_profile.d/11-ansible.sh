@@ -64,7 +64,7 @@ if [[ -n "${ANSIBLE// }" ]]; then
       }
     elif [[ "${ANSIBLE_RUN_ENV// }" == "venv" ]]; then
       if [[ -n "${ANSIBLE_RUN_VENV_PATH// }" ]]; then
-        source ${ANSIBLE_RUN_VENV_PATH// }/bin/activate
+        alias setansible="source ${ANSIBLE_RUN_VENV_PATH// }/bin/activate"
       else
         echo "Error: variable \$ANSIBLE_RUN_VENV_PATH not set."
       fi
