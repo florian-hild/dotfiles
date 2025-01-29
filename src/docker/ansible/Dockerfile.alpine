@@ -8,7 +8,8 @@ ENV LANG=C.UTF-8
 RUN <<EOF
 apk update
 apk add --no-cache bash openssh-client git
-rm -rf /var/cache/apk/*
+python3 -m pip install --no-cache --upgrade pip
+rm -rf /var/cache/apk/* /tmp/pip-reqs-* /home/root/.cache/pip/*
 EOF
 
 # Add user and group
@@ -27,43 +28,18 @@ USER ansible
 # Set PATH to user bin used by pip
 ENV PATH="/home/ansible/.local/bin:${PATH}"
 RUN --mount=type=bind,source=requirements_ansible-${ANSIBLE_VERSION}_alpine.txt,target=/tmp/requirements.txt --mount=type=bind,source=requirements.yml,target=/tmp/requirements.yml <<EOF
-python3 -m pip install --no-cache -r /tmp/requirements.txt
-rm -rf /tmp/pip-reqs-* /ansible/.cache/pip/*
+python3 -m pip install --no-cache --user -r /tmp/requirements.txt
+rm -rf /tmp/pip-reqs-* /home/ansible/.cache/pip/*
 ansible-galaxy install -r tmp/requirements.yml
 EOF
 
 # Configure Ansible
 ENV ANSIBLE_REMOTE_TEMP=/tmp/.ansible \
+    ANSIBLE_HOME=/home/ansible/.ansible \
+    ANSIBLE_CONFIG=/home/ansible/ansible/ansible.cfg \
     ANSIBLE_FORCE_COLOR=True \
-    ANSIBLE_CONFIG=/home/ansible/ansible.cfg
+    ANSIBLE_HOST_KEY_CHECKING=False
 
-# Generate Ansible vault password file
-COPY --chown=root:ansible --chmod=0650 <<EOF /home/ansible/.vault_pass.sh
-#!/bin/bash
-echo "\${VAULT_PASSWORD}"
-exit
-EOF
-
-# Generate Ansible config file
-COPY --chown=root:root --chmod=0644 <<EOF /home/ansible/ansible.cfg
-[defaults]
-inventory=/ansible/environments/test/
-roles_path=/ansible/roles_wip:/ansible/roles
-collections_path=/ansible/ansible_collections_wip:/ansible/ansible_collections
-remote_user=ansible
-vault_password_file=/home/ansible/.vault_pass.sh
-host_key_checking=False
-display_skipped_hosts=False
-deprecation_warnings=True
-nocows=True
-private_key_file=~/.ssh/id_ed25519_ansible_vmadmin
-# Human-readable output
-stdout_callback=yaml
-fact_caching=jsonfile
-fact_caching_connection=/ansible/cache
-EOF
-
-# Make sure we use the virtualenv
 SHELL ["/bin/bash", "-c"]
-WORKDIR /ansible
+WORKDIR /home/ansible/ansible
 CMD ["ansible", "--version"]
