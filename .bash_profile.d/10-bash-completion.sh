@@ -1,10 +1,8 @@
 # bash-completion
 
 # Add all ssh commands from history
-if [[ "$(uname -s)" != "Darwin" ]]; then
-  [[ -n "${BASH_PROFILE_DEBUG}" ]] && print_debug_msg "${BASH_SOURCE[0]}" "Load bash completion from HISTFILE ssh commands"
-  complete -W "$(command grep -Pow "^ssh\s+([\.0-9a-zA-Z]+@)?([a-zA-Z]+([\.0-9a-zA-Z]+)?(-[\.0-9a-zA-Z]+)*|([0-9]{1,3}\.){3}[0-9]{1,3})" ${HISTFILE} | LANG=C sort | uniq)" ssh
-fi
+[[ -n "${BASH_PROFILE_DEBUG}" ]] && print_debug_msg "${BASH_SOURCE[0]}" "Load bash completion from HISTFILE ssh commands"
+complete -W "$(command grep -Eo "^ssh[[:space:]]+([\.0-9a-zA-Z]+@)?([a-zA-Z0-9.-]+)" "${HISTFILE}" | LANG=C sort | uniq)" ssh
 
 # Mac OS
 if [[ "$(uname -s)" == "Darwin" ]]; then
