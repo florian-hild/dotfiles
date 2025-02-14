@@ -11,6 +11,21 @@ if [[ -n "${ANSIBLE// }" ]]; then
   export PLAYBOOKS="${ANSIBLE}/playbooks"
   export ROLES="${ANSIBLE}/roles"
   export ROLESWIP="${ANSIBLE}/roles_wip"
+  function ansible-playbook(){
+    if command -v ansible >> /dev/null; then
+      local ansible_args="${@}"
+      local ansible_cmd="$(which ansible)-playbook ${ansible_args}"
+      local ansible_host="$(echo ${ansible_args} | grep -oP '(?<=-l )\S+')"
+      local log_file="${HOME}/.ansible/logs/play_$(date -I)_${ansible_host}.log"
+      export ANSIBLE_LOG_PATH=${log_file}
+      echo "##################################################################################################################################################" >> ${log_file}
+      echo "command:" >> ${log_file}
+      echo "${ansible_cmd}" >> ${log_file}
+      ${ansible_cmd}
+    else
+      echo "ansible-playbook: command not found"
+    fi
+  }
 
   if [[ -n "${ANSIBLE_RUN_ENV// }" ]]; then
     if [[ "${ANSIBLE_RUN_ENV// }" == "container" ]]; then
