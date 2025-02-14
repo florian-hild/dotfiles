@@ -1,7 +1,12 @@
 # Set aliases
 
-alias ll="ls -lh --color --time-style=long-iso"
-alias ls="ls -h --color --time-style=long-iso"
+if [[ "$(uname)" == "Darwin" ]]; then
+  alias ll="ls -lh --color"
+  alias ls="ls -h --color"
+else
+  alias ll="ls -lh --color --time-style=long-iso"
+  alias ls="ls -h --color --time-style=long-iso"
+fi
 alias grep="grep --color"
 alias rm="rm -i"
 alias cp="cp -i"
