@@ -1,0 +1,21 @@
+{
+  "name": "rpmbuild-dev-container",
+  "dockerFile": "Dockerfile",
+  "mounts": [
+    {
+      "source": "/etc/localtime",
+      "target": "/etc/localtime",
+      "type": "bind"
+    }
+  ],
+  "runArgs": ["--name=vscode-dev-container-rpmbuild"],
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "vscode.makefile-tools",
+        "yzhang.markdown-all-in-one",
+        "eamodio.gitlens"
+      ]
+    }
+  }
+}
