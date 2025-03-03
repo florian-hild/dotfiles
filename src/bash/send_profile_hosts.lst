@@ -1,6 +1,5 @@
 hosts=(
     vmadmin
-    linux7
     vmtools
     vmlinux6
     vmsupcis
