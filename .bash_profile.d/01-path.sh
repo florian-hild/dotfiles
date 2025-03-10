@@ -42,6 +42,7 @@ if [[ "$(uname -s)" == "Darwin" ]]; then
     "$(${brew_cmd} --prefix)/opt/gnu-getopt/bin"
     "$(${brew_cmd} --prefix)/opt/coreutils/libexec/gnubin"
     "$(${brew_cmd} --prefix)/bin"
+    "$(${brew_cmd} --prefix)/sbin"
   )
 
   for lpath in "${mac_paths[@]}"; do

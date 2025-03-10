@@ -15,5 +15,9 @@ alias du="du -sh *"
 alias df="df -hT"
 alias tree="tree -C"
 alias vi="vim"
-alias diff="diff -EZBbw"
+if [[ "$(uname -s)" == "Darwin" ]]; then
+  alias diff="diff --ignore-blank-lines --ignore-space-change --ignore-all-space"
+else
+  alias diff="diff --ignore-tab-expansion --ignore-trailing-space --ignore-blank-lines --ignore-space-change --ignore-all-space"
+fi
 alias less="less -R"
