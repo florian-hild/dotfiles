@@ -31,7 +31,7 @@ if [[ "$(uname -s)" == "Darwin" ]]; then
     elif [[ -x "/usr/local/bin/brew" ]]; then
       brew_cmd="/usr/local/bin/brew"
     else
-      echo "[WARN] bre command not found"
+      echo "[WARN] brew command not found"
       brew_cmd="brew"
     fi
   else
