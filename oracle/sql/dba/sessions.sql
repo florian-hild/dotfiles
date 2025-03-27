@@ -5,7 +5,7 @@
 --------------------------------------------------------------------------------
 
 set pagesize 2000
-set linesize 250
+set linesize 300
 alter session set nls_date_format='DD-MON-YYYY HH24:MI:SS';
 
 col SID format 99999
@@ -13,12 +13,12 @@ col SERIAL# format 999999
 col PROCESS format a15
 col USERNAME format a16
 col STATUS format a8
-col OSUSER format a15
+col OSUSER format a20
 col PROGRAM format a60
-col CLIENT_IDENTIFIER format a17
+col CLIENT_IDENTIFIER format a50
 col LOGON_TIME format a20
 col IP format a15
-col MACHINE format a35
+col MACHINE format a40
 
 SELECT USERNAME,OSUSER,MACHINE,SID,SERIAL#,CLIENT_IDENTIFIER,PROGRAM,PROCESS,STATUS,LOGON_TIME
   FROM v$session
