@@ -3,3 +3,4 @@
 .venv
 src/c/**/bin
 src/c/**/obj
+**/send_profile_hosts.lst
