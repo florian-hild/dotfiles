@@ -7,7 +7,22 @@ else
 fi
 
 for host in "${hosts[@]}"; do
-    echo -n "Sync to ${host}"
-    files_synced=$(rsync -azAHxi --delete --delete-during $(realpath ${HOME}/.dotfiles)/. hild@${host}:.dotfiles/ | /usr/bin/grep '^<' | /usr/bin/wc -l)
-    echo -e " (${files_synced} changed)"
+    rsync_cmd=(
+        /opt/homebrew/bin/rsync
+        --archive
+        --compress
+        --acls
+        --hard-links
+        --itemize-changes
+        --inplace
+        --delete
+        --delete-during
+        $(realpath ${HOME}/.dotfiles)/.
+        hild@${host}:.dotfiles/
+    )
+
+    # Execute rsync command
+    rsync_output=$("${rsync_cmd[@]}")
+    files_synced=$(echo "${rsync_output}" | grep '^<' | wc -l)
+    printf "Sync to ${host} (${files_synced// } changed)\n"
 done
