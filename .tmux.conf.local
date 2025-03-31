@@ -407,9 +407,11 @@ set -g mouse on
 # move status line to top
 #set -g status-position top
 
-# my keyboard Bindings
+# My customizations
+# Alt+n to rename window
 bind -n M-n command-prompt 'rename-window %%'
-# Alt +
+
+# Alt + Arrow keys
 bind -n M-Left previous-window
 bind -n M-Right next-window
 bind -n M-Down new-window
@@ -431,21 +433,11 @@ bind -n S-Down select-pane -D
 # maximize current pane
 bind -n M-+ run 'cut -c3- ~/.tmux.conf | sh -s _maximize_pane "#{session_name}" #D'
 
-# Damit backspace funktioniert nach dem Setzen der Umgebung
-bind -n Bspace send-keys C-h
-
 # Damit beim scrollen der kopierte Inhalt nicht überschrieben wird
 bind -T copy-mode-vi DoubleClick1Pane select-pane\; send -X select-word\; send -X stop-selection
 
-# SSH key-forwarding
-# https://werat.dev/blog/happy-ssh-agent-forwarding/
-#cat ~/.ssh/rc
-#if [ ! -S ~/.ssh/ssh_auth_sock ] && [ -S "$SSH_AUTH_SOCK" ]; then
-#    ln -sf $SSH_AUTH_SOCK ~/.ssh/ssh_auth_sock
-#fi
-#set-environment -g 'SSH_AUTH_SOCK' ~/.ssh/ssh_auth_sock
-
-#bind-key u capture-pane -pS - > /tmp/tmux-buffer
+# Damit backspace funktioniert nach dem Setzen der Supcis Umgebung
+# bind -n Bspace send-keys C-h
 
 # -- tpm -----------------------------------------------------------------------
 
