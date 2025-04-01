@@ -8,7 +8,7 @@ fi
 
 for host in "${hosts[@]}"; do
     rsync_cmd=(
-        /opt/homebrew/bin/rsync
+      rsync
         --archive
         --compress
         --acls
