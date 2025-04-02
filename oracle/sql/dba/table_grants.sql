@@ -1,22 +1,34 @@
 --------------------------------------------------------------------------------
 -- Author     : Florian Hild
 -- Created    : 24-05-2024
--- Description:
+-- Description: Displays privileges for a specified table.
 --------------------------------------------------------------------------------
 
-set pagesize 2000
-set linesize 250
+SET PAGESIZE 2000
+SET LINESIZE 250
+-- disable the display of substitution variable values before execution
+SET VERIFY OFF
 
-col TABLE_NAME format a40
-col OWNER format a20
-col GRANTEE format a20
-col PRIVILEGE format a25
-col TYPE format a10
-col GRANTOR format a20
+COL TABLE_NAME FORMAT A40
+COL OWNER FORMAT A20
+COL GRANTEE FORMAT A20
+COL PRIVILEGE FORMAT A25
+COL TYPE FORMAT A10
+COL GRANTOR FORMAT A20
+COL GRANTABLE FORMAT A10
 
-accept table_name char prompt 'Please enter table name: ';
+ACCEPT table_name CHAR PROMPT 'Please enter table name: ';
 
-SELECT TABLE_NAME,OWNER,GRANTEE,PRIVILEGE,TYPE,GRANTOR
-  FROM dba_tab_privs
-  WHERE TABLE_NAME = '&table_name'
-  ORDER BY OWNER,TABLE_NAME,GRANTEE,TYPE ASC;
+SELECT
+    OWNER,
+    TABLE_NAME,
+    GRANTEE,
+    PRIVILEGE,
+    TYPE,
+    GRANTABLE,
+    GRANTOR
+FROM DBA_TAB_PRIVS
+WHERE TABLE_NAME = TRIM(UPPER('&table_name'))
+ORDER BY OWNER, TABLE_NAME, GRANTEE, TYPE, PRIVILEGE ASC;
+
+SET VERIFY ON

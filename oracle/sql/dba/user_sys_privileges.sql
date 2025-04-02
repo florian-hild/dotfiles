@@ -1,7 +1,7 @@
 --------------------------------------------------------------------------------
 -- Author     : Florian Hild
 -- Created    : 24-05-2024
--- Description:
+-- Description: Retrieves system privileges granted to users (excluding roles and system accounts)
 --------------------------------------------------------------------------------
 
 set linesize 250
@@ -13,6 +13,7 @@ col ADMIN_OPTION    format a4
 col COMMON          format a4
 col INHERITED       format a4
 
-SELECT GRANTEE,PRIVILEGE,ADMIN_OPTION,COMMON,INHERITED
+SELECT GRANTEE, PRIVILEGE, ADMIN_OPTION, COMMON, INHERITED
   FROM dba_sys_privs
-  ORDER BY GRANTEE,PRIVILEGE;
+  WHERE GRANTEE IN ( SELECT USERNAME FROM DBA_USERS WHERE ORACLE_MAINTAINED = 'N')
+  ORDER BY GRANTEE, PRIVILEGE ASC;

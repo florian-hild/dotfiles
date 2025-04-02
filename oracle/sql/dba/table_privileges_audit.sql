@@ -1,7 +1,7 @@
 --------------------------------------------------------------------------------
 -- Author     : Florian Hild
 -- Created    : 24-05-2024
--- Description:
+-- Description: Lists all object (table) privileges granted by non-system users.
 --------------------------------------------------------------------------------
 
 set pagesize 70
@@ -14,8 +14,7 @@ col PRIVILEGE format a25
 col TYPE format a10
 col GRANTOR format a20
 
-SELECT TABLE_NAME,OWNER,GRANTEE,PRIVILEGE,TYPE,GRANTOR
+SELECT OWNER, TABLE_NAME, GRANTEE, PRIVILEGE, TYPE, GRANTOR
   FROM dba_tab_privs
-  where Type = 'PACKAGE'
-  and GRANTEE = user
-  ORDER BY OWNER,TABLE_NAME,GRANTEE,TYPE ASC;
+  WHERE GRANTOR IN ( SELECT USERNAME FROM DBA_USERS WHERE ORACLE_MAINTAINED = 'N')
+  ORDER BY OWNER, TABLE_NAME, GRANTEE, TYPE, PRIVILEGE ASC;
