@@ -14,12 +14,22 @@ if [[ "$(uname -s)" == "Darwin" ]]; then
     source "${HOME}/.iterm2_shell_integration.bash"
   fi
 
+  function list_jnlp() {
+    ls -1tr "${DOWNLOADS}"/*.jnlp
+  }
+
   # Open JNLP files with OpenWebStart
   function open_jnlp() {
     local jnlp_file="${1}"
 
+    if [[ -z "${jnlp_file}" ]]; then
+      jnlp_file="$(ls -1tr "${DOWNLOADS}"/*.jnlp 2>/dev/null | tail -n 1)"
+    fi
+
     if [[ -f "${jnlp_file}" ]]; then
-      open -a "OpenWebStart javaws" "$jnlp_file"
+      echo "Opening JNLP-File: ${jnlp_file}"
+      xattr -dr com.apple.quarantine "${jnlp_file}"
+      open -a "OpenWebStart javaws" "${jnlp_file}"
     else
       echo "JNLP-File not found: ${jnlp_file}"
     fi
