@@ -34,4 +34,33 @@ if [[ "$(uname -s)" == "Darwin" ]]; then
       echo "JNLP-File not found: ${jnlp_file}"
     fi
   }
+
+  # Clear MS Teams cache with checks and logging
+  function clear_ms_teams_cache() {
+    local app_name="Microsoft Teams"
+    local cache_paths=(
+      "${HOME}/Library/Group Containers/UBF8T346G9.com.microsoft.teams"
+      "${HOME}/Library/Containers/com.microsoft.teams2/Data"
+    )
+
+
+    echo "Stopping ${app_name}..."
+    osascript -e "quit app \"${app_name}\""
+    pkill -x "${app_name}"
+
+    for path in "${cache_paths[@]}"; do
+      if [ -d "${path}" ]; then
+        echo "INFO Removing: ${path}"
+        rm -rf "${path}"
+      else
+        echo "ERROR Path not found: ${path}"
+      fi
+    done
+
+    echo "INFO ${app_name} cache clear process completed."
+
+    echo "Starting ${app_name}..."
+    open -a "${app_name}"
+  }
+
 fi
