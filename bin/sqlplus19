@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+ORACLE_CLIENT_VERSION=19
+
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+"${SCRIPT_DIR}/../src/docker/oracle_instantclient/sqlplus.sh" "$@"
