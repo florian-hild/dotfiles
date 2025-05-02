@@ -34,12 +34,16 @@ if [[ -d "${HOME}/.dotfiles/oracle/sql" ]]; then
   SQLPATH_OPTS="-e SQLPATH=/opt/oracle/sql -v ${HOME}/.dotfiles/oracle/sql:/opt/oracle/sql"
 fi
 
-set -x
+declare -r UNIQ_ID=$(date +%s)
+
 ${CONTAINER_CLI} run -it --rm \
   -v "${TNS_ADMIN}:/opt/oracle/instantclient/network/admin" \
   -v '/etc/localtime:/etc/localtime:ro' \
   -e 'TNS_ADMIN=/opt/oracle/instantclient/network/admin' \
   -e 'TZ=Europe/Berlin' \
+  --user nobody \
+  --hostname "$(hostname)-${UNIQ_ID}" \
+  --name "oracle-instantclient-sqlplus-${UNIQ_ID}" \
   ${SQLPATH_OPTS} \
   "${oracle_client_image}" \
   sqlplus "${@}"
