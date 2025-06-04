@@ -65,6 +65,7 @@ if [[ "$(uname -s)" == "Darwin" ]]; then
 
   setPath "$(${brew_cmd} --prefix)/opt/gnu-getopt/bin"
   setPath "$(${brew_cmd} --prefix)/opt/coreutils/libexec/gnubin"
+  setPath "$(${brew_cmd} --prefix)/opt/make/libexec/gnubin"
   setPath "$(${brew_cmd} --prefix)/sbin"
   setPath "$(${brew_cmd} --prefix)/bin"
 
