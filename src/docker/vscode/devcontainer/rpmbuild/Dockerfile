@@ -1,4 +1,4 @@
-FROM container-registry.oracle.com/os/oraclelinux:9
+FROM container-registry.oracle.com/os/oraclelinux:10
 RUN <<EOF
   dnf --nodocs -y upgrade-minimal
   dnf --nodocs -y install --setopt=install_weak_deps=False \
