@@ -17,9 +17,7 @@ from typing import List, Optional
 
 
 def parse_args() -> argparse.Namespace:
-    parser = argparse.ArgumentParser(
-        description="Ping monitor with high latency detection and summary"
-    )
+    parser = argparse.ArgumentParser(description="Ping monitor with high latency detection and summary")
     parser.add_argument(
         "target",
         nargs="?",
@@ -47,14 +45,20 @@ def parse_args() -> argparse.Namespace:
         default=50.0,
         help="Latency threshold in ms for warnings (default: 50.0)",
     )
+
+    parser.add_argument(
+        "-v",
+        "--verbose",
+        help="Enable verbose output",
+        action="store_true",
+    )
+
     return parser.parse_args()
 
 
 def ping_once(target: str) -> Optional[float]:
     try:
-        result = subprocess.run(
-            ["ping", "-c", "1", target], capture_output=True, text=True
-        )
+        result = subprocess.run(["ping", "-c", "1", target], capture_output=True, text=True)
         if result.returncode == 0 and "time=" in result.stdout:
             latency = float(result.stdout.split("time=")[-1].split()[0])
             return latency
@@ -64,17 +68,17 @@ def ping_once(target: str) -> Optional[float]:
 
 
 def print_header(target: str, duration: int, interval: int, threshold: float) -> None:
-    print(f"""Ping Monitor:
+    print(
+        f"""Ping Monitor:
   Target            : {target}
   Duration          : {duration} min
   Interval          : {interval} sec
   Latency threshold : {threshold} ms
-""")
+"""
+    )
 
 
-def print_summary(
-    target: str, start_time: datetime, sent: int, lost: int, latencies: List[float]
-) -> None:
+def print_summary(target: str, start_time: datetime, sent: int, lost: int, latencies: List[float]) -> None:
     end_time = datetime.now()
     duration = (end_time - start_time).total_seconds() / 60
     received = sent - lost
@@ -90,7 +94,7 @@ def print_summary(
     print(f"  Average latency  : {avg_latency:.2f} ms")
 
 
-def monitor(target: str, duration_min: int, interval: int, threshold: float) -> None:
+def monitor(target: str, duration_min: int, interval: int, threshold: float, verbose: bool) -> None:
     end_time = time.time() + (duration_min * 60)
     sent = 0
     lost = 0
@@ -106,9 +110,10 @@ def monitor(target: str, duration_min: int, interval: int, threshold: float) -> 
             if latency is not None:
                 latencies.append(latency)
                 if latency > threshold:
-                    print(
-                        f"{timestamp} WARN  High latency: {latency:.2f} ms to {target}"
-                    )
+                    print(f"{timestamp} WARN  High latency: {latency:.2f} ms to {target}")
+                else:
+                    if verbose:
+                        print(f"{timestamp} INFO  Latency: {latency:.2f} ms to {target}")
             else:
                 lost += 1
                 print(f"{timestamp} ERROR Host {target} unreachable")
@@ -124,7 +129,7 @@ def monitor(target: str, duration_min: int, interval: int, threshold: float) -> 
 def main() -> None:
     args = parse_args()
     print_header(args.target, args.duration, args.interval, args.threshold)
-    monitor(args.target, args.duration, args.interval, args.threshold)
+    monitor(args.target, args.duration, args.interval, args.threshold, args.verbose)
 
 
 if __name__ == "__main__":
