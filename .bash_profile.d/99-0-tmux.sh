@@ -5,7 +5,7 @@ if [[ -n "${LOAD_TMUX// }" ]] && shopt -q login_shell; then
   if command -v tmux > /dev/null 2>&1; then
     # Check if inside a tmux session
     if [[ -z "${TMUX// }" ]]; then
-      if [[ "${LOAD_TMUX// }" -eq "always-new-session" ]]; then
+      if [[ "${LOAD_TMUX// }" = "always-new-session" ]]; then
         # start a new session
         tmux -u new -s default-$(date +'%Y%m%d_%H%M%S') bash
       else
