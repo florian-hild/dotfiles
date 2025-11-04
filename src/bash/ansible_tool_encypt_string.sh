@@ -82,7 +82,11 @@ if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
     done
 fi
 
-if ! which ansible-vault > /dev/null 2>&1; then
+if [[ -n "${ANSIBLE// }" ]]; then
+    source ${DOT}/.bash_profile.d/11-ansible.sh
+fi
+
+if ! command -v ansible-vault > /dev/null 2>&1; then
   echo "ansible-vault command not found!"
   exit 1
 fi

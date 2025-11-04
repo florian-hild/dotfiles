@@ -68,6 +68,17 @@ if [[ -n "${ANSIBLE// }" ]]; then
       else
         echo "Error: variable \$ANSIBLE_RUN_VENV_PATH not set."
       fi
+    elif [[ "${ANSIBLE_RUN_ENV// }" == "uv" ]]; then
+        if [[ -n "${ANSIBLE_UV_PROJECT_PATH// }" ]]; then
+            function ansible { uv run --project ${ANSIBLE_UV_PROJECT_PATH// } ansible ${@}; }
+            function ansible-playbook { uv run --project ${ANSIBLE_UV_PROJECT_PATH// } ansible-playbook ${@}; }
+            function ansible-vault { uv run --project ${ANSIBLE_UV_PROJECT_PATH// } ansible-vault ${@}; }
+            function ansible-lint { uv run --project ${ANSIBLE_UV_PROJECT_PATH// } ansible-lint ${@}; }
+        else
+            echo "Error: variable \$ANSIBLE_UV_PROJECT_PATH not set."
+        fi
+    else
+    echo "Error: variable \$ANSIBLE_RUN_ENV has an unknown value: ${ANSIBLE_RUN_ENV// }"
     fi
   else
     echo "Error: variable \$ANSIBLE_RUN_ENV not set."
