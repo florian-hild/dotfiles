@@ -18,12 +18,12 @@ function __my_git_ps1() {
   fi
 
   # Check for uncommitted changes
-  if ! git diff --quiet --ignore-submodules --; then
+  if ! git diff --quiet --ignore-submodules -- >> /dev/null; then
       status+="*"
   fi
 
   # Check for staged but uncommitted files
-  if ! git diff --cached --quiet --ignore-submodules --; then
+  if ! git diff --cached --quiet --ignore-submodules -- >> /dev/null; then
       status+="+"
   fi
 
