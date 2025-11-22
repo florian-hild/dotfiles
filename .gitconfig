@@ -45,8 +45,9 @@
     alias = config --get-regexp ^alias
     b = branch -va
     bb = !"git for-each-ref --color --sort=-committerdate --format=$'%(color:red)%(ahead-behind:HEAD)\t%(color:blue)%(refname:short)\t%(color:yellow)%(committerdate:relative)\t%(color:default)%(describe)' refs/heads/ | sed 's/ /\t/' | column --separator=$'\t' --table --table-columns='Ahead,Behind,Branch Name,Last Commit,Description'"
+    cm = commit -m
     co = checkout
-    d = diff --staged
+    d = diff --staged --color
     db = !"git fetch --all --prune; git branch -vv | awk '/: gone]/{print $1}' | grep -v '+' | xargs git branch -D;"
     dh = diff HEAD
     f = fetch --all -Pp
@@ -56,7 +57,7 @@
     pb = push -u origin HEAD
     pl = pull --rebase
     st = status --short
-    staash = stash --all
+    staash = stash --all -u
     w = worktree
     wl = worktree list
     wr = worktree remove
