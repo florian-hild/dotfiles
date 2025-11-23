@@ -1,40 +1,52 @@
 # Custom prompt
 
-function __my_git_ps1() {
-  local gitdir=$(git rev-parse --git-dir 2>/dev/null)
-  if [[ -z "${gitdir// }" ]]; then
-    return
-  fi
+# Git-aware prompt
+__custom_git_ps1() {
+    local gitdir branch status staged unstaged untracked stash_count
 
-  local branch=$(git symbolic-ref --short HEAD 2>/dev/null || git rev-parse --short HEAD)
-  if [[ -z "${branch// }" ]]; then
-    return
-  fi
+    gitdir=$(git rev-parse --git-dir 2>/dev/null) || return
+    branch=$(git symbolic-ref --short HEAD 2>/dev/null || git rev-parse --short HEAD 2>/dev/null) || return
 
-  local status=""
-  # Check for stashed changes
-  if [[ -e "${gitdir}/logs/refs/stash" ]]; then
-    status+="!"
-  fi
+    status=$(git status --porcelain 2>/dev/null)
 
-  # Check for uncommitted changes
-  if ! git diff --quiet --ignore-submodules -- >> /dev/null; then
-      status+="*"
-  fi
+    # Count staged, unstaged, and untracked changes
+    staged=$(echo "$status" | grep -E '^[A-Z]' | wc -l)
+    unstaged=$(echo "$status" | grep -E '^.[^ ]' | wc -l)
+    untracked=$(echo "$status" | grep -E '^\?\?' | wc -l)
 
-  # Check for staged but uncommitted files
-  if ! git diff --cached --quiet --ignore-submodules -- >> /dev/null; then
-      status+="+"
-  fi
+    # Stash count
+    stash_count=0
+    [[ -e "$gitdir/logs/refs/stash" ]] && stash_count=$(git stash list | wc -l)
 
-  echo "[${branch}${status}]"
+    local symbols=""
+    [[ $staged -gt 0 ]] && symbols+="+"
+    [[ $unstaged -gt 0 ]] && symbols+="*"
+    [[ $untracked -gt 0 ]] && symbols+="?"
+    [[ $stash_count -gt 0 ]] && symbols+="!"
+
+    echo "[${branch}${symbols}]"
 }
 
+__custom_awscli_ps1() {
+    if [[ -n "${AWS_PROFILE// }" ]]; then
+      echo "(${AWS_PROFILE})"
+    fi
+}
+
+# Prompt
 if [[ "${TERM}" =~ ^(screen|xterm|tmux-).*$ ]]; then
-  if [[ "${LOGNAME}" = "root" ]] || [[ "$(id -u)" -eq "0" ]]; then
-    # Root prompt colors
-    PS1='\[$(tput setaf 1)\]\u@\h\[$(tput setaf 3)\]$(__my_git_ps1)\[$(tput setaf 10)\]$([ -z ${AWS_PROFILE} ] || echo " (${AWS_PROFILE})")\[$(tput sgr0)\]: \[$(tput setaf 81)\]\w\n\[$(tput setaf 1)\]$\[$(tput sgr0)\] '
-  else
-    PS1='\[$(tput setaf 85)\]\u@\h\[$(tput setaf 3)\]$(__my_git_ps1)\[$(tput setaf 10)\]$([ -z ${AWS_PROFILE} ] || echo " (${AWS_PROFILE})")\[$(tput sgr0)\]: \[$(tput setaf 81)\]\w\n\[$(tput setaf 85)\]$\[$(tput sgr0)\] '
-  fi
+    # Color definitions
+    ps1_color_user="\[$(tput setaf 85)\]"
+    ps1_color_root="\[$(tput setaf 1)\]"
+    ps1_color_git="\[$(tput setaf 3)\]"
+    ps1_color_aws="\[$(tput setaf 10)\]"
+    ps1_color_wd="\[$(tput setaf 81)\]"
+    ps1_colort_reset="\[$(tput sgr0)\]"
+
+    if [[ "$(id -u)" -eq 0 ]]; then
+        PS1="${ps1_color_root}\u@\h${ps1_color_git}\$(__custom_git_ps1)${ps1_color_aws}\$(__custom_awscli_ps1)${ps1_colort_reset}: ${ps1_color_wd}\w\n${ps1_color_root}\$ ${ps1_colort_reset}"
+    else
+        PS1="${ps1_color_user}\u@\h${ps1_color_git}\$(__custom_git_ps1)${ps1_color_aws}\$(__custom_awscli_ps1)${ps1_colort_reset}: ${ps1_color_wd}\w\n${ps1_color_user}\$ ${ps1_colort_reset}"
+    fi
+    unset ps1_color_user ps1_color_root ps1_color_git ps1_color_aws ps1_color_wd ps1_colort_reset
 fi
