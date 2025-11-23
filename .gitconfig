@@ -14,13 +14,13 @@
 
 [core]
     editor = vim
+    pager = less -FRX
     # Linux
     autocrlf = input
     # Windows
     #autocrlf = true
     safecrlf = false
     whitespace = fix,trailing-space,-space-before-tab,tab-in-indent,cr-at-eol
-    pager = less
 [pull]
     ff = only
     rebase = merges
