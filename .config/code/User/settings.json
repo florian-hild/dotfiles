@@ -1,0 +1,352 @@
+{
+    // ============================================
+    // WORKBENCH SETTINGS
+    // ============================================
+    "workbench.startupEditor": "newUntitledFile",
+    "workbench.iconTheme": "material-icon-theme",
+    "workbench.colorTheme": "Atom One Dark",
+    "workbench.sideBar.location": "right",
+    "workbench.tips.enabled": false,
+    "workbench.editor.enablePreview": false,
+    "workbench.editor.tabSizing": "shrink",
+    "workbench.settings.editor": "json",
+    "workbench.layoutControl.enabled": false,
+    "workbench.colorCustomizations": {
+        "editorUnnecessaryCode.border": "#ff0000"
+    },
+    // ============================================
+    // WINDOW SETTINGS
+    // ============================================
+    "window.zoomLevel": 0.3,
+    // ============================================
+    // EDITOR SETTINGS
+    // ============================================
+    "editor.fontFamily": "Anonymous Pro",
+    "editor.fontLigatures": true,
+    "editor.fontSize": 14,
+    "editor.lineNumbers": "on",
+    "editor.rulers": [
+        80,
+        120
+    ],
+    "editor.tabSize": 4,
+    "editor.detectIndentation": false,
+    "editor.accessibilitySupport": "off",
+    "editor.bracketPairColorization.enabled": true,
+    "editor.language.colorizedBracketPairs": [],
+    "editor.quickSuggestions": {
+        "other": true,
+        "comments": false,
+        "strings": true
+    },
+    "editor.quickSuggestionsDelay": 10,
+    "editor.suggestOnTriggerCharacters": true,
+    "editor.acceptSuggestionOnEnter": "on",
+    "editor.codeLens": true,
+    "editor.inlayHints.enabled": "on",
+    "editor.minimap.enabled": false,
+    "editor.renderWhitespace": "all",
+    "editor.defaultFormatter": "charliermarsh.ruff",
+    "editor.formatOnSave": true,
+    "editor.formatOnPaste": true,
+    "editor.formatOnSaveMode": "file",
+    "editor.codeActionsOnSave": {
+        "source.organizeImports": "always",
+        "source.fixAll": "always"
+    },
+    "editor.cursorBlinking": "smooth",
+    "editor.cursorSmoothCaretAnimation": "on",
+    "editor.stickyScroll.enabled": true,
+    "editor.guides.bracketPairs": true,
+    "editor.linkedEditing": true,
+    "editor.wordWrap": "off",
+    "editor.wordWrapColumn": 120,
+    "editor.wrappingIndent": "indent",
+    "editor.suggest.preview": true,
+    "editor.suggest.showWords": false,
+    "editor.parameterHints.enabled": true,
+    "editor.snippetSuggestions": "top",
+    // ============================================
+    // EXPLORER SETTINGS
+    // ============================================
+    "explorer.excludeGitIgnore": true,
+    "explorer.autoReveal": true,
+    "explorer.confirmDelete": false,
+    "explorer.confirmDragAndDrop": false,
+    // ============================================
+    // FILES SETTINGS
+    // ============================================
+    "files.insertFinalNewline": true,
+    "files.trimTrailingWhitespace": true,
+    "files.autoSave": "onFocusChange",
+    "files.associations": {
+        "*.j2": "ansible-jinja"
+    },
+    "files.exclude": {
+        ".git": true,
+        "**/.git": false
+    },
+    // ============================================
+    // SEARCH SETTINGS
+    // ============================================
+    "search.exclude": {
+        "**/node_modules": true,
+        "**/bower_components": true,
+        "**/.git": true,
+        "**/venv": true,
+        "**/.venv": true,
+        "**/__pycache__": true,
+        "**/*.pyc": true
+    },
+    "search.smartCase": true,
+    "search.useIgnoreFiles": true,
+    // ============================================
+    // DIFF EDITOR SETTINGS
+    // ============================================
+    "diffEditor.ignoreTrimWhitespace": false,
+    "diffEditor.renderSideBySide": true,
+    "diffEditor.wordWrap": "off",
+    // ============================================
+    // BREADCRUMBS SETTINGS
+    // ============================================
+    "breadcrumbs.enabled": true,
+    "breadcrumbs.filePath": "on",
+    "breadcrumbs.symbolPath": "on",
+    // ============================================
+    // PROBLEMS SETTINGS
+    // ============================================
+    "problems.showCurrentInStatus": true,
+    "problems.sortOrder": "severity",
+    // ============================================
+    // SCM SETTINGS
+    // ============================================
+    "scm.defaultViewMode": "tree",
+    // ============================================
+    // TERMINAL SETTINGS
+    // ============================================
+    "terminal.integrated.copyOnSelection": true,
+    "terminal.integrated.cursorBlinking": true,
+    "terminal.integrated.cursorStyle": "line",
+    "terminal.integrated.fontFamily": "monospace",
+    "terminal.integrated.fontSize": 12.5,
+    "terminal.integrated.scrollback": 20000,
+    "terminal.integrated.rightClickBehavior": "paste",
+    "terminal.integrated.tabs.enabled": true,
+    "terminal.integrated.tabs.hideCondition": "never",
+    "terminal.integrated.tabs.location": "right",
+    // ============================================
+    // GIT SETTINGS
+    // ============================================
+    "git.openRepositoryInParentFolders": "never",
+    "git.autofetch": true,
+    "git.confirmSync": false,
+    "git.enableSmartCommit": true,
+    "git.showActionButton": {
+        "commit": false,
+        "publish": false,
+        "sync": false
+    },
+    "git.decorations.enabled": true,
+    "git.pruneOnFetch": true,
+    "git.fetchOnPull": true,
+    "git.rebaseWhenSync": false,
+    // ============================================
+    // DEBUG SETTINGS
+    // ============================================
+    "debug.toolBarLocation": "docked",
+    // ============================================
+    // SECURITY & TELEMETRY
+    // ============================================
+    "security.workspace.trust.untrustedFiles": "open",
+    "telemetry.telemetryLevel": "off",
+    // ============================================
+    // LANGUAGE-SPECIFIC SETTINGS
+    // ============================================
+    // Markdown
+    "markdown.preview.scrollEditorWithPreview": true,
+    "markdown.preview.scrollPreviewWithEditor": true,
+    // YAML
+    "yaml.customTags": [
+        "!vault"
+    ],
+    // Python
+    "python.analysis.typeCheckingMode": "standard",
+    "python.createEnvironment.trigger": "off",
+    "[python]": {
+        "editor.formatOnType": true,
+        "editor.formatOnPaste": true,
+        "editor.formatOnSave": true,
+        "editor.defaultFormatter": "ms-python.black-formatter",
+        "editor.codeActionsOnSave": {
+            "source.fixAll": "explicit",
+            "source.organizeImports": "explicit"
+        }
+    },
+    // Terraform
+    "[terraform]": {
+        "editor.formatOnType": true,
+        "editor.formatOnPaste": true,
+        "editor.formatOnSave": true,
+        "editor.defaultFormatter": "hashicorp.terraform",
+        "editor.tabSize": 4
+    },
+    "[terraform-vars]": {
+        "editor.formatOnType": true,
+        "editor.formatOnPaste": true,
+        "editor.formatOnSave": true,
+        "editor.defaultFormatter": "hashicorp.terraform",
+        "editor.tabSize": 4
+    },
+    // Ansible
+    "[ansible]": {
+        "editor.detectIndentation": true,
+        "editor.insertSpaces": true,
+        "editor.tabSize": 2,
+        "editor.quickSuggestions": {
+            "comments": true,
+            "other": true,
+            "strings": true
+        },
+        "editor.autoIndent": "advanced",
+        "editor.defaultFormatter": "redhat.ansible"
+    },
+    // GitHub Actions
+    "[github-actions-workflow]": {
+        "editor.tabSize": 2,
+        "editor.insertSpaces": true,
+        "editor.defaultFormatter": "redhat.vscode-yaml"
+    },
+    // Docker Compose
+    "[dockercompose]": {
+        "editor.insertSpaces": true,
+        "editor.tabSize": 2,
+        "editor.autoIndent": "advanced",
+        "editor.defaultFormatter": "redhat.vscode-yaml"
+    },
+    // Plaintext
+    "[plaintext]": {
+        "editor.unicodeHighlight.ambiguousCharacters": false,
+        "editor.unicodeHighlight.invisibleCharacters": false
+    },
+    // Shell Script
+    "[shellscript]": {
+        "editor.tabSize": 4,
+        "editor.insertSpaces": true
+    },
+    // SQL
+    "[sql]": {
+        "editor.tabSize": 4,
+        "editor.insertSpaces": true,
+        "editor.formatOnSave": false
+    },
+    // JSON
+    "[json]": {
+        "editor.defaultFormatter": "vscode.json-language-features"
+    },
+    "[jsonc]": {
+        "editor.defaultFormatter": "vscode.json-language-features"
+    },
+    // Perl
+    "[perl]": {
+        "editor.tabSize": 4,
+        "editor.insertSpaces": true
+    },
+    // ============================================
+    // EXTENSION SETTINGS
+    // ============================================
+    // Extensions
+    "extensions.autoUpdate": "onlyEnabledExtensions",
+    // GitLens
+    "gitlens.telemetry.enabled": false,
+    "gitlens.ai.model": "vscode",
+    "gitlens.ai.vscode.model": "copilot:gpt-4.1",
+    // GitHub Pull Requests
+    "githubPullRequests.terminalLinksHandler": "github",
+    "githubPullRequests.pullBranch": "never",
+    // GitHub Copilot
+    "github.copilot.nextEditSuggestions.enabled": true,
+    "github.copilot.enable": {
+        "*": true,
+        "plaintext": false,
+        "markdown": true,
+        "scminput": false
+    },
+    // GitHub Local Actions
+    "githubLocalActions.dockerDesktopPath": "/Applications/Docker.app"
+    // Chat Tools
+    "chat.tools.terminal.autoApprove": {
+        "make": true,
+        "podman": true,
+        "mkdir": true,
+        "mv": true,
+        "find": true,
+        "talosctl": true,
+        "uv": true,
+        "shellcheck": true,
+        "./gradlew": true,
+        "open": true,
+        "git ls-files": true
+    },
+    // Ansible Extension
+    "ansible.ansible.useFullyQualifiedCollectionNames": true,
+    "ansible.validation.lint.enabled": true,
+    "ansible.lightspeed.enabled": false,
+    "ansible.lightspeed.suggestions.enabled": false,
+    "ansible.ansible.path": "/Users/hild/ansible/.venv-ansible-latest/bin/ansible",
+    "ansible.ansibleNavigator.path": "/Users/hild/ansible/.venv-ansible-latest/bin/ansible-navigator",
+    "ansible.validation.lint.path": "/Users/hild/ansible/.venv-ansible-latest/bin/ansible-lint",
+    "ansible.python.activationScript": "/Users/hild/ansible/.venv-ansible-latest/bin/activate",
+    "ansible.python.interpreterPath": "/Users/hild/ansible/.venv-ansible-latest/bin/python3",
+    // Python Formatters
+    "black-formatter.args": [
+        "--line-length",
+        "150"
+    ],
+    "ruff.importStrategy": "useBundled",
+    // RedHat
+    "redhat.telemetry.enabled": false,
+    // Dev Containers
+    "dev.containers.dockerPath": "podman",
+    // SQL Developer
+    "sqldeveloper.sqlHistory.historyLimit": 300,
+    "sqldeveloper.telemetry.enabled": false,
+    // TODO Tree
+    "todo-tree.highlights.highlightDelay": 0,
+    "todo-tree.tree.autoRefresh": true,
+    "todo-tree.filtering.excludeGlobs": [
+        "**/lib/**",
+        "**/libraries/**",
+        "**/library/**"
+    ],
+    "todo-tree.highlights.customHighlight": {
+        "TODO": {
+            "foreground": "#0000FF",
+            "background": "#90EE90",
+            "iconColour": "#008000",
+            "icon": "check",
+            "type": "line"
+        },
+        "FIXME": {
+            "foreground": "#FFFFFF",
+            "background": "#FF0000",
+            "iconColour": "#FF0000",
+            "icon": "bug",
+            "type": "line"
+        },
+        "REVIEW": {
+            "foreground": "#000000",
+            "background": "#00FFFF",
+            "iconColour": "#ADD8E6",
+            "icon": "eye",
+            "type": "line"
+        }
+    },
+    "todo-tree.highlights.defaultHighlight": {
+        "type": "line"
+    },
+    "todo-tree.general.tags": [
+        "TODO",
+        "FIXME",
+        "REVIEW"
+    ]
+}
