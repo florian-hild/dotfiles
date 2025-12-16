@@ -47,12 +47,16 @@ cat >> ${HOME}/.gitconfig <<EOF
 EOF
 fi
 
+[[ ! -d "${HOME}/.terraform.d/plugin-cache" ]] && mkdir -p "${HOME}/.terraform.d/plugin-cache"
+
+
 echo "Setup symlinks"
 ln -sfn ${DOT_PATH}/.vim ${HOME}/.vim
 ln -sfn ${DOT_PATH}/.vimrc ${HOME}/.vimrc
 ln -sfn ${DOT_PATH}/.digrc ${HOME}/.digrc
 ln -sfn ${DOT_PATH}/.tmux.conf ${HOME}/.tmux.conf
 ln -sfn ${DOT_PATH}/.tmux.conf.local ${HOME}/.tmux.conf.local
+ln -sfn ${DOT_PATH}/.terraformrc ${HOME}/.terraformrc
 
 [[ ! -d ${HOME}/bin ]] && ln -sn ${DOT_PATH}/bin ${HOME}/bin
 
