@@ -1,0 +1,8 @@
+# Ignore files created by Python
+.venv
+venv/
+__pycache__/
+*.py[codz]
+*$py.class
+.pytest_cache/
+.ruff_cache/

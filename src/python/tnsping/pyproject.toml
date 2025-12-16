@@ -3,7 +3,17 @@ name = "tnsping"
 version = "0.1.0"
 description = "Add your description here"
 readme = "README.md"
-requires-python = ">=3.9"
+requires-python = ">=3.13"
 dependencies = [
     "python-ldap>=3.4.4",
 ]
+
+[dependency-groups]
+dev = [
+    "pytest>=9.0.2",
+    "pytest-mock>=3.15.1",
+]
+
+[tool.pytest.ini_options]
+pythonpath = "."
+testpaths = ["tests"]
