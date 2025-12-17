@@ -1,21 +1,12 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
-################################################################################
-# Kurzbeschr. ....:
-# Entwickler .....: F.Hild
-# Datum ..........: 27.01.2013
-# Ablageort ......:
-# Git-Repo .......:
-# Review .........:
-# Beschreibung ...:
-#
-# Aenderung ......:
-# youTrack .......:
-# confluence .....:
-################################################################################
+#-------------------------------------------------------------------------------
+# Author     : Florian Hild
+# Created    : 27-01-2023
+# Description:
+#------------------------------------------------------------------------------
 
 export LANG=C
-declare -r __SCRIPT_VERSION__='1.0'
 
 if [[ -z "${1// }" ]] || [[ -z "${2// }" ]] || [[ -z "${3// }" ]]; then
   echo "$0 <local file> <remote file> <remote host>"
@@ -33,4 +24,5 @@ else
 fi
 
 echo "diff ${LOCAL_FILE} ${REMOTE_FILE} at ${REMOTE_HOST}"
-/usr/bin/ssh ${REMOTE_HOST} "/bin/cat ${REMOTE_FILE}" | ${DIFF_CMD} -EZBbw ${LOCAL_FILE} -
+# shellcheck disable=SC2029
+/usr/bin/ssh "${REMOTE_HOST}" "/bin/cat ${REMOTE_FILE}" | ${DIFF_CMD} --ignore-blank-lines --ignore-space-change --ignore-all-space "${LOCAL_FILE}" -

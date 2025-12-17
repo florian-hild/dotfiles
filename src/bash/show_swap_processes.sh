@@ -1,7 +1,12 @@
-#!/bin/bash
+#!/usr/bin/env bash
+
+#-------------------------------------------------------------------------------
+# Author     : Florian Hild
+# Created    :
+# Description:
+#------------------------------------------------------------------------------
 
 export LANG=C
-declare -r __SCRIPT_VERSION__='1.0'
 
 overall=0
 for status_file in /proc/[0-9]*/status; do

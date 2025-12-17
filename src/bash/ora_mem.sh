@@ -7,7 +7,6 @@
 #-------------------------------------------------------------------------------
 
 export LANG=C
-declare -r __SCRIPT_VERSION__='1.0'
 
 if [[ "${LOGNAME}" != "root" ]] || [[ ! "$(id -u)" -eq "0" ]]; then
   echo "Script must be started as root user!"
@@ -18,15 +17,15 @@ sids=$(pgrep -u oracle -l ora_pmon | awk '{print substr($NF,10)}')
 total_mem_kb=0
 
 for sid in ${sids} ; do
-  pids=$(pgrep -u oracle -f ${sid^^})
-  mem_kb=$(pmap ${pids} 2>&1 | grep "K " | sort | awk '{print $1 " " substr($2,1,length($2)-1)}' | uniq | awk ' BEGIN { sum=0 } { sum+=$2} END {print sum}')
+  pids=$(pgrep -u oracle -f "${sid^^}")
+  mem_kb=$(pmap "${pids}" 2>&1 | grep "K " | sort | awk '{print $1 " " substr($2,1,length($2)-1)}' | uniq | awk ' BEGIN { sum=0 } { sum+=$2} END {print sum}')
 
   # Convert KB to GB
   mem_gb=$(echo "scale=2; ${mem_kb} / (1024 * 1024)" | bc)
 
 
   echo "SID: ${sid^^}: ${mem_gb}"
-  total_mem_kb=$(expr ${total} + ${mem_kb})
+  total_mem_kb=$((total_mem_kb + mem_kb))
 done
 
 # Convert KB to GB

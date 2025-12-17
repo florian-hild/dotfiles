@@ -1,30 +1,39 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
-################################################################################
-# Kurzbeschr. :
-# Entwickler  : F.Hild
-# Datum       : 22.11.21
-# Ablageort   : bin
-# Git-Repo    : linux_home_hild
-# Beschreibung:
-################################################################################
+#-------------------------------------------------------------------------------
+# Author     : Florian Hild
+# Created    : 22-11-2021
+# Description:
+#------------------------------------------------------------------------------
 
 export LANG=C
-declare -r VERSION='1.0'
+declare -r __SCRIPT_VERSION__='1.0'
 
-# Prints program usage information.
-show_usage() {
-    echo -e "Verwendung: $(basename ${0}) [OPTIONEN]..."
-    echo -e "  -d, --domain         Set Domain (Default: SAMBA)."
-    echo -e "  -h, --help           Zeigt diese Hilfe."
-    echo -e "  -p, --password       Set Password (Required)."
-    echo -e "  -u, --user           Set Username (Required)."
-    echo -e "  -v, --verbose        Debugging Ausgabe."
-    echo -e "  -V, --version        Zeigt Skript Version."
-    echo -e "  -s, --server         Set Server (Default: localhost)."
-    echo -e "Aufrufbeispiele:"
-    echo -e "  ./$(basename ${0}) -s 10.0.0.100 -u testdomain -p Geheim123"
-    exit 0
+# help(exit_code)
+# Print help message and exit
+help() {
+  local -r exit_code="${1:-0}"
+  cat << EOF
+Test SMB/CIFS share access permissions
+
+Usage:
+  ${0} [options]
+
+Options:
+  -d, --domain <DOMAIN>          Set domain (Default: SAMBA)
+  -h, --help                     Display this help and exit
+  -p, --password <PASSWORD>      Set password (required)
+  -u, --user <USERNAME>          Set username (required)
+  -v, --verbose                  Print debugging messages
+  -V, --version                  Display version and exit
+  -s, --server <SERVER>          Set server (Default: localhost)
+
+Examples:
+  Test SMB shares on server
+  \$ ${0} -s 10.0.0.100 -u testdomain -p Secret123
+
+EOF
+  exit "${exit_code}"
 }
 
 test_smb_share(){
@@ -34,7 +43,7 @@ test_smb_share(){
   echo " Shares:"
   echo " -------------------------------------------------"
 
-  cd "${TMPDIR:-/tmp}"
+  cd "${TMPDIR:-/tmp}" || exit
   touch tmp_$$.tmp           # Required locally to copy to target
 
   smbclient -L "$server" -g -A <( echo "username=$username"; echo "password=$password" ) 2>/dev/null |
@@ -65,58 +74,50 @@ test_smb_share(){
 #                                    Start                                     #
 ################################################################################
 if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
-    if [[ ${#} -eq "0" ]] || [[ ${@} == "-" ]] || [[ ${@} == "--" ]]; then
-        echo "Keine gueltige Option angegeben !!"
-        echo -e " "
-        show_usage
-        exit 2
-    fi
+    domain="SAMBA"
+    password=""
+    username=""
+    server="localhost"
 
-    OPTS="$(getopt -o "d:hp:u:vVs:" --long "domain:,help,password:,user:,verbose,version,server:" -n "${progname}" -- "${@}")"
-    if [[ "${?}" != "0" ]] ; then
-        echo "Fehler: Unbekannte Option ${1}" >&2
-        exit 2
-    fi
-    eval set -- "$OPTS"
-
-    while true; do
+    while [[ $# -gt 0 ]]; do
         case "${1}" in
         -d | --domain)
-            declare domain="${2}"
+            domain="${2}"
             shift 2
             ;;
         -h | --help)
-            show_usage
-            exit 0
+            help 0
             ;;
         -p | --password)
-            declare -r password="${2}"
+            password="${2}"
             shift 2
             ;;
         -u | --user)
-            declare username="${2}"
+            username="${2}"
             shift 2
             ;;
         -v | --verbose)
-            declare -r verbose="1"
             set -xv  # Set xtrace and verbose mode.
             shift
             ;;
         -V | --version)
-            echo "${VERSION}"
+            echo "${__SCRIPT_VERSION__}"
             exit 0
             ;;
         -s | --server)
-            declare server="${2}"
+            server="${2}"
             shift 2
             ;;
-        -- )
+        --)
             shift
             break
             ;;
+        -*)
+            echo "Error: Unknown option ${1}" >&2
+            help 2
+            ;;
         *)
-            echo "Fehler: Unbekannte Option ${1}" >&2
-            exit 2
+            break
             ;;
         esac
     done

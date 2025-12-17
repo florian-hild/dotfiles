@@ -7,29 +7,28 @@
 #-------------------------------------------------------------------------------
 
 export LANG=C
-declare -r __SCRIPT_VERSION__='1.0'
 declare -i main_opts_set=0
 
 # help(exit_code)
 # Print help message and exit
 help() {
   local -r exit_code="${1:-0}"
-  # Print help text
   cat << EOF
+Process analysis script for system and supcis processes
+
 Usage:
   ${0} [options]
 
 Options:
-  -c, --cvs                       Print output as semicolon separated values
+  -c, --csv                       Print output as semicolon separated values
   -h, --help                      Display this help and exit
-  --supcis-env <supcis_env>       Set supcis environment to use sc command (required for supcis proccesses)
-  --supcis-proccesses <proc,proc> Set supcis processes to check
+  --supcis-env <supcis_env>       Set supcis environment to use sc command (required for supcis processes)
+  --supcis-proccesses <proc,proc> Set supcis processes to check (comma-separated)
   --no-header                     Don't print csv header (useful for append to file)
-  -p, --pids <pid,pid>            Set pids to check
-  --timestamp                     Print timestamp (Always shown in CSV mode)
+  -p, --pids <pid,pid>            Set pids to check (comma-separated)
+  --timestamp                     Print timestamp (always shown in CSV mode)
   -u, --user <username>           Set process user
   -v, --verbose                   Print debugging messages
-  -V, --version                   Display version and exit
 
 Examples:
   Get all processes
@@ -43,17 +42,20 @@ Examples:
 
   Get processes as csv
   \$ ${0} --supcis-env supt --supcis-proccesses dsp,srv1,tms --csv > supt_procs.csv
+
 EOF
-  exit ${exit_code}
+  exit "${exit_code}"
 }
 
 # set_supcis_environment()
 # Source supcis environment
 set_supcis_environment() {
   if [[ -r /usr/local/bin/supcis ]]; then
-    . /usr/local/bin/supcis /opt/${supcis_env}/prod_v1/config/project.dat
+    # shellcheck source=/dev/null
+    . /usr/local/bin/supcis /opt/"${supcis_env}"/prod_v1/config/project.dat
   elif [[ -r /usr/bin/supenv ]]; then
-    . /usr/bin/supenv ${supcis_env}
+    # shellcheck source=/dev/null
+    . /usr/bin/supenv "${supcis_env}"
   else
     echo "Error: supcis environment \"${supcis_env}\" not found."
     exit 1
@@ -76,12 +78,17 @@ get_process_info() {
 
       declare -A supcis_proc_map
       for name in ${supcis_processes}; do
-        # Save supcis process name from sc in associative array using pid as key
-        supcis_proc_map["$(sc csv ${name} | cut -d';' -f7)"]=${name}
+        if [[ $(sc csv "${name}" | wc -c) -gt 1 ]]; then
+          # Save supcis process name from sc in associative array using pid as key
+          supcis_proc_map["$(sc csv "${name}" | cut -d';' -f7)"]=${name}
+        else
+          echo "Error: supcis process \"${name}\" not found."
+        fi
       done
 
       # Extract keys (pids) from array and create comma seperated list
-      local supcis_pids=$(printf -- '%s\n' "${!supcis_proc_map[@]}" | xargs -I % echo -n "%," | sed 's/,$//')
+      local supcis_pids
+      supcis_pids=$(printf -- '%s\n' "${!supcis_proc_map[@]}" | xargs -I % echo -n "%," | sed 's/,$//')
 
       ps_cmd+=" -p ${supcis_pids}"
       ;;
@@ -116,15 +123,16 @@ get_process_info() {
   if [[ -n "${csv// }" ]]; then
     # Print in CSV format
     for ps_line in "${ps_output[@]}"; do
-      local username="$(echo "${ps_line}" | tr -s ' ' | cut -d' ' -f1)"
-      local pid="$(echo "${ps_line}"      | tr -s ' ' | cut -d' ' -f2)"
-      local time="$(echo "${ps_line}"     | tr -s ' ' | cut -d' ' -f3)"
-      local cpu_pct="$(echo "${ps_line}"  | tr -s ' ' | cut -d' ' -f4)"
-      local mem_pct="$(echo "${ps_line}"  | tr -s ' ' | cut -d' ' -f5)"
-      local rss="$(echo "${ps_line}"      | tr -s ' ' | cut -d' ' -f6)"
-      local vsz="$(echo "${ps_line}"      | tr -s ' ' | cut -d' ' -f7)"
-      local stat="$(echo "${ps_line}"     | tr -s ' ' | cut -d' ' -f8)"
-      local command="$(echo "${ps_line}"  | tr -s ' ' | cut -d' ' -f9-)"
+      local username pid time cpu_pct mem_pct rss vsz stat command
+      username="$(echo "${ps_line}" | tr -s ' ' | cut -d' ' -f1)"
+      pid="$(echo "${ps_line}"      | tr -s ' ' | cut -d' ' -f2)"
+      time="$(echo "${ps_line}"     | tr -s ' ' | cut -d' ' -f3)"
+      cpu_pct="$(echo "${ps_line}"  | tr -s ' ' | cut -d' ' -f4)"
+      mem_pct="$(echo "${ps_line}"  | tr -s ' ' | cut -d' ' -f5)"
+      rss="$(echo "${ps_line}"      | tr -s ' ' | cut -d' ' -f6)"
+      vsz="$(echo "${ps_line}"      | tr -s ' ' | cut -d' ' -f7)"
+      stat="$(echo "${ps_line}"     | tr -s ' ' | cut -d' ' -f8)"
+      command="$(echo "${ps_line}"  | tr -s ' ' | cut -d' ' -f9-)"
 
 
 
@@ -142,9 +150,10 @@ get_process_info() {
     fi
 
     for ps_line in "${ps_output[@]}"; do
-      local pid="$(echo "${ps_line}"      | tr -s ' ' | cut -d' ' -f2)"
-      local rss="$(echo "${ps_line}"      | tr -s ' ' | cut -d' ' -f6)"
-      local proc_rss_total=$(expr ${proc_rss_total} + ${rss})
+      local pid rss
+      pid="$(echo "${ps_line}"      | tr -s ' ' | cut -d' ' -f2)"
+      rss="$(echo "${ps_line}"      | tr -s ' ' | cut -d' ' -f6)"
+      proc_rss_total=$((proc_rss_total + rss))
 
       # Only show header column if mode supcis
       if [[ "${mode}" == "supcis" ]]; then
@@ -163,14 +172,13 @@ get_process_info() {
 # Start of script
 if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
   if [[ ${#} -ne "0" ]]; then
-    if [[ ${@} == "-" ]] || [[ ${@} == "--" ]]; then
+    if [[ ${*} == "-" ]] || [[ ${*} == "--" ]]; then
       echo "Syntax or usage error (1)" >&2
       echo
       help 128
     fi
 
-    OPTS="$(getopt -o 'chp:u:vV' --long 'csv,help,supcis-env:,supcis-proccesses:,no-header,pids:,timestamp,user:,verbose,version' -n "${0}" -- "${@}")"
-    if [[ "${?}" != "0" ]] ; then
+    if ! OPTS="$(getopt -o 'chp:u:v' --long 'csv,help,supcis-env:,supcis-proccesses:,no-header,pids:,timestamp,user:,verbose' -n "${0}" -- "${@}")"; then
       echo "Syntax or usage error (2)" >&2
       echo
       help 128
@@ -191,7 +199,7 @@ if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
         shift 2
         ;;
       --supcis-proccesses)
-        declare -r supcis_processes=$(echo ${2} | sed 's/,/ /g')
+        declare -r supcis_processes="${2//,/ }"
         shift 2
         ((main_opts_set++))
         ;;
@@ -214,13 +222,8 @@ if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
         ((main_opts_set++))
         ;;
       -v | --verbose)
-        declare -r verbose="1"
         set -xv  # Set xtrace and verbose mode.
         shift
-        ;;
-      -V | --version)
-        echo "${__SCRIPT_VERSION__}"
-        exit 0
         ;;
       -- )
         shift

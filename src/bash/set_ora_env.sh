@@ -1,21 +1,20 @@
 #!/usr/bin/env bash
 
-################################################################################
-# Developer ......: F.Hild
-# Created ........: 11.08.2023
-# Description ....: Set oracle environment
-################################################################################
+#-------------------------------------------------------------------------------
+# Author     : Florian Hild
+# Created    : 11-08-2023
+# Description: Set oracle environment
+#-------------------------------------------------------------------------------
 
 export LANG=C
-
-declare -r __SCRIPT_VERSION__='1.0'
 
 # help(exit_code)
 # Print help message and exit
 help() {
   local -r exit_code="${1:-0}"
-  # Print help text
   cat << EOF
+Set Oracle environment variables
+
 Usage:
   ${0} [options]
 
@@ -32,21 +31,24 @@ Options:
 Examples:
   Set Oracle environment
   \$ ${0} --home /opt/oracle/product/19.3.0/client_64
+
 EOF
-  exit ${exit_code}
+  exit "${exit_code}"
 }
 
 # main()
 # Start of script
 if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
-  if [[ ${#} -eq "0" ]] || [[ ${@} == "-" ]] || [[ ${@} == "--" ]]; then
+  progname="$(basename "${0}")"
+  declare -r progname
+
+  if [[ ${#} -eq "0" ]] || [[ ${*} == "-" ]] || [[ ${*} == "--" ]]; then
     echo "Syntax or usage error (1)" >&2
     echo
     help 128
   fi
 
-  OPTS="$(getopt -o "c:hs:vV" --long "characterset:,help,home:,ldpath:,sid:,tns_admin:,verbose,version" -n "${progname}" -- "${@}")"
-  if [[ "${?}" != "0" ]] ; then
+  if ! OPTS="$(getopt -o "c:hs:vV" --long "characterset:,help,home:,ldpath:,sid:,tns_admin:,verbose,version" -n "${progname}" -- "${@}")"; then
     echo "Syntax or usage error (2)" >&2
     echo
     help 128
@@ -79,7 +81,6 @@ if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
       shift 2
       ;;
     -v | --verbose)
-      declare -r verbose="1"
       set -xv  # Set xtrace and verbose mode.
       shift
       ;;
