@@ -231,7 +231,10 @@
     // Shell Script
     "[shellscript]": {
         "editor.tabSize": 4,
-        "editor.insertSpaces": true
+        "editor.insertSpaces": true,
+        "editor.codeActionsOnSave": {
+            "source.fixAll": "explicit"
+        }
     },
     // SQL
     "[sql]": {
@@ -272,7 +275,7 @@
         "scminput": false
     },
     // GitHub Local Actions
-    "githubLocalActions.dockerDesktopPath": "/Applications/Docker.app"
+    "githubLocalActions.dockerDesktopPath": "/Applications/Docker.app",
     // Chat Tools
     "chat.tools.terminal.autoApprove": {
         "make": true,
@@ -305,6 +308,14 @@
     "ruff.importStrategy": "useBundled",
     // RedHat
     "redhat.telemetry.enabled": false,
+    // ShellCheck
+    "shellcheck.enable": true,
+    "shellcheck.run": "onSave",
+    "shellcheck.executablePath": "shellcheck",
+    "shellcheck.enableQuickFix": true,
+    "shellcheck.customArgs": [],
+    "shellcheck.exclude": [],
+    "shellcheck.useWSL": false,
     // Dev Containers
     "dev.containers.dockerPath": "podman",
     // SQL Developer
