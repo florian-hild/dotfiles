@@ -69,7 +69,7 @@
     // ============================================
     // EXPLORER SETTINGS
     // ============================================
-    "explorer.excludeGitIgnore": true,
+    "explorer.excludeGitIgnore": false,
     "explorer.autoReveal": true,
     "explorer.confirmDelete": false,
     "explorer.confirmDragAndDrop": false,
