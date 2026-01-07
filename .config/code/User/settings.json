@@ -268,6 +268,7 @@
     "githubPullRequests.pullBranch": "never",
     // GitHub Copilot
     "github.copilot.nextEditSuggestions.enabled": true,
+    "github.copilot.chat.virtualTools.threshold": 0,
     "github.copilot.enable": {
         "*": true,
         "plaintext": false,
@@ -319,7 +320,7 @@
     // Dev Containers
     "dev.containers.dockerPath": "podman",
     // SQL Developer
-    "sqldeveloper.sqlHistory.historyLimit": 300,
+    "sqldeveloper.sqlHistory.historyLimit": 500,
     "sqldeveloper.telemetry.enabled": false,
     // TODO Tree
     "todo-tree.highlights.highlightDelay": 0,
