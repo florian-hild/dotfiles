@@ -101,12 +101,7 @@
     "terminal.integrated.tabs.enabled": true,
     "terminal.integrated.tabs.hideCondition": "never",
     "terminal.integrated.tabs.location": "right",
-    "terminal.integrated.defaultProfile.osx": "bash",
-    "terminal.integrated.profiles.osx": {
-        "bash": {
-            "path": "/opt/homebrew/bin/bash"
-        }
-    },
+    "terminal.integrated.shell.osx": "/opt/homebrew/bin/bash",
     "git.openRepositoryInParentFolders": "never",
     "git.autofetch": true,
     "git.confirmSync": false,
@@ -218,7 +213,6 @@
         "scminput": false
     },
     "githubLocalActions.dockerDesktopPath": "/Applications/Docker.app",
-    "chat.viewSessions.orientation": "stacked",
     "chat.tools.terminal.autoApprove": {
         "make": true,
         "podman": true,
@@ -241,6 +235,10 @@
     "ansible.validation.lint.path": "/Users/hild/ansible/.venv-ansible-latest/bin/ansible-lint",
     "ansible.python.activationScript": "/Users/hild/ansible/.venv-ansible-latest/bin/activate",
     "ansible.python.interpreterPath": "/Users/hild/ansible/.venv-ansible-latest/bin/python3",
+    "black-formatter.args": [
+        "--line-length",
+        "150"
+    ],
     "ruff.importStrategy": "useBundled",
     "redhat.telemetry.enabled": false,
     "shellcheck.enable": true,
@@ -290,4 +288,5 @@
         "FIXME",
         "REVIEW"
     ],
+    "chat.viewSessions.orientation": "stacked",
 }
