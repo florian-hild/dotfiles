@@ -16,29 +16,18 @@ function setPath() {
 
 function reorderPath() {
   [[ -n "${BASH_PROFILE_DEBUG}" ]] && print_debug_msg "${BASH_SOURCE[0]}" "Run reorderPath()"
-  local original_path="${PATH}"
+
   local new_path=""
-  local IFS=":"
-  local seen=()
-  declare -A path_map
+  declare -a seen_paths
 
-  # Add CUSTOM_PATH entries first, ensuring uniqueness
-  for dir in ${CUSTOM_PATH}; do
-      if [[ -d "${dir}" && -z "${path_map[${dir}]}" ]]; then
-          new_path+="${dir}:"
-          path_map[${dir}]=1
-      fi
+  # Process CUSTOM_PATH first, then remaining PATH entries
+  for dir in ${CUSTOM_PATH} ${PATH//:/ }; do
+    if [[ -d "${dir}" ]] && [[ ! " ${seen_paths[@]} " =~ " ${dir} " ]]; then
+      new_path+="${dir}:"
+      seen_paths+=("${dir}")
+    fi
   done
 
-  # Add remaining PATH entries while avoiding duplicates
-  for dir in ${original_path}; do
-      if [[ -d "${dir}" && -z "${path_map[${dir}]}" ]]; then
-          new_path+="${dir}:"
-          path_map[${dir}]=1
-      fi
-  done
-
-  # Remove trailing colon and export new PATH
   export PATH="${new_path%:}"
 }
 
