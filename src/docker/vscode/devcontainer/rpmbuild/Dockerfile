@@ -1,4 +1,4 @@
-FROM container-registry.oracle.com/os/oraclelinux:9
+FROM container-registry.oracle.com/os/oraclelinux:10
 
 ENV LANG=C.UTF-8 \
     TZ='Europe/Berlin'
