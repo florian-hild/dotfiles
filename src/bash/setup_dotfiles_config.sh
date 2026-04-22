@@ -60,7 +60,8 @@ ln -sfn "${DOT_PATH}"/.vim "${HOME}"/.vim
 ln -sfn "${DOT_PATH}"/.vimrc "${HOME}"/.vimrc
 ln -sfn "${DOT_PATH}"/.digrc "${HOME}"/.digrc
 ln -sfn "${DOT_PATH}"/.tmux.conf "${HOME}"/.tmux.conf
-ln -sfn "${DOT_PATH}"/.tmux.conf.local "${HOME}"/.tmux.conf.local
+mkdir -p "${HOME}"/.tmux
+ln -sfn "${DOT_PATH}"/.tmux/scripts "${HOME}"/.tmux/scripts
 ln -sfn "${DOT_PATH}"/.terraformrc "${HOME}"/.terraformrc
 
 [[ ! -d ${HOME}/bin ]] && ln -sn "${DOT_PATH}"/bin "${HOME}"/bin
