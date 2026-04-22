@@ -1,3 +1,4 @@
+# shellcheck disable=SC2148
 # pyvenv
 
 if [[ -d "${HOME}/.pyenv" ]]; then

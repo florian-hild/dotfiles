@@ -1,3 +1,4 @@
+# shellcheck disable=SC2148
 # AWS cli setup
 
 if command -v aws > /dev/null 2>&1; then
@@ -12,7 +13,8 @@ if command -v aws > /dev/null 2>&1; then
 #                  --name aws-cli-worker-$(date +'%Y%m%d_%H%M%S') \
 #                  public.ecr.aws/aws-cli/aws-cli:latest sso login
 #   }
+  # shellcheck disable=SC2139
   alias aws-login=". ${HOME}/.aws/login"
   alias aws-logout='aws sso logout && unset AWS_PROFILE'
-  function aws-list { /usr/bin/grep profile ${HOME}/.aws/config | awk '{print $2}' | cut -d']' -f1 | LANG=C sort; }
+  function aws-list { /usr/bin/grep profile "${HOME}"/.aws/config | awk '{print $2}' | cut -d']' -f1 | LANG=C sort; }
 fi

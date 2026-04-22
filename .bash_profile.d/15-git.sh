@@ -1,3 +1,4 @@
+# shellcheck disable=SC2148
 # git
 
 # Git commit helpers (Conventional Commits)

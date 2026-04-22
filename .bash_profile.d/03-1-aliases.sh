@@ -1,3 +1,4 @@
+# shellcheck disable=SC2148
 # Set aliases
 
 if [[ "$(uname)" == "Darwin" ]]; then

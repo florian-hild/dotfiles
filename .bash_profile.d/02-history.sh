@@ -1,3 +1,4 @@
+# shellcheck disable=SC2148
 # Bash history
 
 HISTSIZE= # unlimited
@@ -8,7 +9,7 @@ HISTTIMEFORMAT="|%Y-%m-%d %H:%M| "
 PROMPT_COMMAND="history -a"
 HISTCONTROL="ignoreboth"
 
-if [[ $(uname -s) != "Darwin" ]] && [[ $(stat -f -L -c %T ${HOME}) =~ nfs ]]; then
+if [[ $(uname -s) != "Darwin" ]] && [[ $(stat -f -L -c %T "${HOME}") =~ nfs ]]; then
   HISTFILE="${HOME}/.bash_history_$(hostname -s)"
 else
   HISTFILE="${HOME}/.bash_history"

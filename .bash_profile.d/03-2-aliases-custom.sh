@@ -1,6 +1,8 @@
+# shellcheck disable=SC2148
 # My aliases
 
 alias showaliases="alias|cut -d'=' -f1"
+# shellcheck disable=SC2139
 alias lstoday="ls -al --time-style=+%D | grep --color=none $(date +%D)"
 alias findname="find -print -iname "
 alias findbigfiles="find . -type f -exec du -Sh {} + | sort -rh | head -n 20"
@@ -17,4 +19,5 @@ alias ssh_non_sock="ssh -S none "
 alias smbshares="smbclient -L \\\\localhost -N"
 function historyf { history|grep -in "$1" --color; }
 alias myhelp='echo lstoday; echo "findname <word>"; echo "pscpu"; echo "psram"; echo "psme"; echo "findhost <word>"; echo "mygrep <word>"; echo "pingf <host>"; echo "historyf <word>";'
-function activate { if [[ -z "${1// }" ]]; then source $PWD/.venv/bin/activate; else source ~/project/python_venv/${1}/bin/activate; fi; }
+# shellcheck disable=SC1090,SC1091,SC2086
+function activate { if [[ -z "${1// }" ]]; then source "$PWD"/.venv/bin/activate; else source ~/project/python_venv/"${1}"/bin/activate; fi; }

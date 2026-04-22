@@ -1,3 +1,4 @@
+# shellcheck disable=SC2148
 # macos settings
 
 # Mac OS paths
@@ -11,6 +12,7 @@ if [[ "$(uname -s)" == "Darwin" ]]; then
 
   # Load ITerm2 shell integration
   if [[ -r "${HOME}/.iterm2_shell_integration.bash" ]]; then
+    # shellcheck disable=SC1091
     source "${HOME}/.iterm2_shell_integration.bash"
   fi
 
@@ -23,6 +25,7 @@ if [[ "$(uname -s)" == "Darwin" ]]; then
     local jnlp_file="${1}"
 
     if [[ -z "${jnlp_file}" ]]; then
+      # shellcheck disable=SC2012
       jnlp_file="$(ls -1tr "${DOWNLOADS}"/*.jnlp 2>/dev/null | tail -n 1)"
     fi
 

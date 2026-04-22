@@ -1,3 +1,4 @@
+# shellcheck disable=SC2148
 # Post path
 
 # Reorder PATH to put custom paths at the front

@@ -1,3 +1,4 @@
+# shellcheck disable=SC2148
 # Custom prompt
 
 # Git-aware prompt
@@ -10,9 +11,9 @@ __custom_git_ps1() {
     status=$(git status --porcelain 2>/dev/null)
 
     # Count staged, unstaged, and untracked changes
-    staged=$(echo "$status" | grep -E '^[A-Z]' | wc -l)
-    unstaged=$(echo "$status" | grep -E '^.[^ ]' | wc -l)
-    untracked=$(echo "$status" | grep -E '^\?\?' | wc -l)
+    staged=$(echo "$status" | grep -cE '^[A-Z]')
+    unstaged=$(echo "$status" | grep -cE '^.[^ ]')
+    untracked=$(echo "$status" | grep -cE '^\?\?')
 
     # Stash count
     stash_count=0

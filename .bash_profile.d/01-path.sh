@@ -1,15 +1,16 @@
+# shellcheck disable=SC2148
 # Set PATH
 
 function setPath() {
   local lpath="${1}"
-  if [[ ! "${PATH}" =~ "${lpath}" ]] && [[ -d ${lpath} ]]; then
+  if [[ ":${PATH}:" != *":${lpath}:"* ]] && [[ -d ${lpath} ]]; then
     [[ -n "${BASH_PROFILE_DEBUG}" ]] && print_debug_msg "${BASH_SOURCE[0]}" "Add to PATH ${lpath}"
     export PATH="${lpath}:${PATH}"
   else
     [[ -n "${BASH_PROFILE_DEBUG}" ]] && print_debug_msg "${BASH_SOURCE[0]}" "Skip adding to PATH ${lpath}"
   fi
 
-  if [[ ! "${CUSTOM_PATH}" =~ "${lpath}" ]] && [[ -d ${lpath} ]]; then
+  if [[ ":${CUSTOM_PATH}:" != *":${lpath}:"* ]] && [[ -d ${lpath} ]]; then
     export CUSTOM_PATH="${lpath}:${CUSTOM_PATH}"
   fi
 }
@@ -22,7 +23,7 @@ function reorderPath() {
 
   # Process CUSTOM_PATH first, then remaining PATH entries
   for dir in ${CUSTOM_PATH} ${PATH//:/ }; do
-    if [[ -d "${dir}" ]] && [[ ! " ${seen_paths[@]} " =~ " ${dir} " ]]; then
+    if [[ -d "${dir}" ]] && [[ " ${seen_paths[*]} " != *" ${dir} "* ]]; then
       new_path+="${dir}:"
       seen_paths+=("${dir}")
     fi
@@ -74,6 +75,6 @@ if [[ -n "${local_paths}" ]]; then
 fi
 
 # .dotfiles/bin
-setPath "$(dirname $(dirname "${BASH_SOURCE[0]}"))/bin"
+setPath "$(dirname "$(dirname "${BASH_SOURCE[0]}")")/bin"
 
 unset lpath

@@ -1,20 +1,22 @@
+# shellcheck disable=SC2148
 # SSH Agent
 
 if [[ -n "${USE_SSH_AGENT// }" ]]; then
   set_ssh_agent() {
     if pgrep -f ssh-agent; then
       export SSH_AUTH_SOCK=${HOME}/.ssh/ssh_auth_sock
-      export SSH_AGENT_PID=$(pgrep ssh-agent)
+      SSH_AGENT_PID=$(pgrep ssh-agent)
+      export SSH_AGENT_PID
     else
-      rm -f ${HOME}/.ssh/ssh_auth_sock
-      eval $(ssh-agent -a ${HOME}/.ssh/ssh_auth_sock)
+      rm -f "${HOME}"/.ssh/ssh_auth_sock
+      eval "$(ssh-agent -a "${HOME}"/.ssh/ssh_auth_sock)"
 
       if [[ -r ${HOME}/.ssh/id_ed25519 ]]; then
-        ssh-add ${HOME}/.ssh/id_ed25519
+        ssh-add "${HOME}"/.ssh/id_ed25519
       elif [[ -r ${HOME}/.ssh/id_rsa ]]; then
-        ssh-add ${HOME}/.ssh/id_rsa
+        ssh-add "${HOME}"/.ssh/id_rsa
       elif [[ -r ${HOME}/.ssh/ssh_key ]]; then
-        ssh-add ${HOME}/.ssh/ssh_key
+        ssh-add "${HOME}"/.ssh/ssh_key
       else
         echo "ssh-agent: No SSH key found"
       fi

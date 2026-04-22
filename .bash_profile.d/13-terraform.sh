@@ -1,3 +1,4 @@
+# shellcheck disable=SC2148
 # Terraform
 
 if command -v terraform > /dev/null 2>&1; then

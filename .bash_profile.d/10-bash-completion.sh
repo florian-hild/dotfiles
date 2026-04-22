@@ -1,3 +1,4 @@
+# shellcheck disable=SC2148
 # bash-completion
 
 bash_completion_paths=(
@@ -7,6 +8,7 @@ bash_completion_paths=(
 
 for file in "${bash_completion_paths[@]}"; do
     if [[ -f "${file}" ]]; then
+        # shellcheck disable=SC1090,SC1091
         source "${file}"
     fi
 done
@@ -23,6 +25,7 @@ tools=(
 
 for cmd in "${tools[@]}"; do
     if command -v "${cmd// }" >/dev/null 2>&1; then
+        # shellcheck disable=SC1090
         source <("${cmd// }" completion bash 2>/dev/null)
     fi
 done
@@ -40,9 +43,11 @@ if [[ "$(uname -s)" == "Darwin" ]]; then
     export BASH_COMPLETION_COMPAT_DIR="${brew_prefix}/etc/bash_completion.d"
 
     if [[ -r "${brew_prefix}/etc/profile.d/bash_completion.sh" ]]; then
+        # shellcheck disable=SC1091
         source "${brew_prefix}/etc/profile.d/bash_completion.sh"
     else
         for completion in "${brew_prefix}/etc/bash_completion.d/"*; do
+            # shellcheck disable=SC1090
             [[ -r "${completion}" ]] && source "${completion}"
         done
         unset completion
@@ -51,9 +56,9 @@ fi
 
 # SSH host completion from history
 if [[ -n "${HISTFILE}" && -f "${HISTFILE}" ]]; then
-    ssh_hosts=($(grep -Eo '^ssh\s+(([a-zA-Z0-9]+@)?[a-zA-Z0-9][a-zA-Z0-9\.-]*)' "${HISTFILE}" \
+    mapfile -t ssh_hosts < <(grep -Eo '^ssh\s+(([a-zA-Z0-9]+@)?[a-zA-Z0-9][a-zA-Z0-9\.-]*)' "${HISTFILE}" \
                  | awk '{print $2}' \
-                 | LANG=C sort -u))
+                 | LANG=C sort -u)
     [[ ${#ssh_hosts[@]} -gt 0 ]] && complete -W "${ssh_hosts[*]}" ssh
     unset ssh_hosts
 fi

@@ -1,3 +1,4 @@
+# shellcheck disable=SC2148
 # Expand Vars in bash tab completion
 shopt | grep -qw '^direxpand' && shopt -s direxpand
 
