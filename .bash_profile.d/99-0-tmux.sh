@@ -8,10 +8,10 @@ if [[ -n "${LOAD_TMUX// }" ]] && shopt -q login_shell; then
     if [[ -z "${TMUX// }" ]]; then
       if [[ "${LOAD_TMUX// }" = "always-new-session" ]]; then
         # start a new session
-        tmux -u new -s work-"$(date +'%Y%m%d_%H%M%S')" bash
+        tmux -u new -s "$(hostname -s)-$(date +'%Y%m%d_%H%M%S')" bash
       else
         # if no session is started, start a new session
-        tmux -u new -A -s work bash
+        tmux -u new -A -s "$(hostname -s)" bash
       fi
     fi
   else
