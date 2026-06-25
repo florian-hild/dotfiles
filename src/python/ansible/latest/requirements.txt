@@ -1,0 +1,17 @@
+# Ansible
+ansible
+ansible-navigator
+
+# Linting and validation
+yamllint
+ansible-lint
+
+# Required Python libraries for Ansible modules and collections
+netaddr        # Network address manipulation (community.general, ip/network tasks)
+jmespath       # JSON querying (json_query filter, community.general)
+cryptography   # Cryptographic operations (community.crypto)
+pyOpenSSL      # OpenSSL bindings (community.crypto SSL certificate management)
+passlib        # Password hashing (user module)
+lxml           # XML/HTML processing (xml module)
+pywinrm        # WinRM connections (ansible.windows)
+PyMySQL        # MySQL/MariaDB (community.mysql)

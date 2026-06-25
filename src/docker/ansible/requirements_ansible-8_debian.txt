@@ -1,4 +1,0 @@
-ansible<9.0.0,>=8.0.0
-yamllint
-ansible-lint
-ansible-navigator

@@ -1,0 +1,17 @@
+---
+# Ansible Galaxy Collections
+# Matches collections installed in ~/ansible/ansible_collections/
+# Upgrade all to latest: ansible-galaxy collection install --upgrade -r requirements.yml
+
+collections:
+  - ansible.posix
+  - ansible.utils
+  - ansible.netcommon
+  - ansible.windows
+  - community.general
+  - community.crypto
+  - community.zabbix
+  - community.mysql
+  - community.postgresql
+
+...
