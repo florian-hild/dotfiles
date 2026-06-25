@@ -37,7 +37,6 @@
     "editor.inlayHints.enabled": "on",
     "editor.minimap.enabled": false,
     "editor.renderWhitespace": "all",
-    "editor.defaultFormatter": "charliermarsh.ruff",
     "editor.formatOnSave": true,
     "editor.formatOnPaste": true,
     "editor.formatOnSaveMode": "file",
@@ -101,7 +100,12 @@
     "terminal.integrated.tabs.enabled": true,
     "terminal.integrated.tabs.hideCondition": "never",
     "terminal.integrated.tabs.location": "right",
-    "terminal.integrated.shell.osx": "/opt/homebrew/bin/bash",
+    "terminal.integrated.defaultProfile.osx": "bash (homebrew)",
+    "terminal.integrated.profiles.osx": {
+        "bash (homebrew)": {
+            "path": "/opt/homebrew/bin/bash"
+        }
+    },
     "git.openRepositoryInParentFolders": "never",
     "git.autofetch": true,
     "git.confirmSync": false,
@@ -198,7 +202,7 @@
         "editor.tabSize": 4,
         "editor.insertSpaces": true
     },
-    "extensions.autoUpdate": "onlyEnabledExtensions",
+    "extensions.autoUpdate": "on",
     "gitlens.telemetry.enabled": false,
     "gitlens.ai.model": "vscode",
     "gitlens.ai.vscode.model": "copilot:gpt-4.1",
@@ -208,11 +212,10 @@
     "github.copilot.chat.virtualTools.threshold": 0,
     "github.copilot.enable": {
         "*": true,
-        "plaintext": false,
+        "plaintext": true,
         "markdown": true,
         "scminput": false
     },
-    "githubLocalActions.dockerDesktopPath": "/Applications/Docker.app",
     "chat.tools.terminal.autoApprove": {
         "make": true,
         "podman": true,
@@ -224,21 +227,19 @@
         "shellcheck": true,
         "./gradlew": true,
         "open": true,
-        "git ls-files": true
+        "git ls-files": true,
+        "git fetch": true,
+        "gh": true
     },
     "ansible.ansible.useFullyQualifiedCollectionNames": true,
     "ansible.validation.lint.enabled": true,
     "ansible.lightspeed.enabled": false,
     "ansible.lightspeed.suggestions.enabled": false,
-    "ansible.ansible.path": "/Users/hild/ansible/.venv-ansible-latest/bin/ansible",
-    "ansible.ansibleNavigator.path": "/Users/hild/ansible/.venv-ansible-latest/bin/ansible-navigator",
-    "ansible.validation.lint.path": "/Users/hild/ansible/.venv-ansible-latest/bin/ansible-lint",
-    "ansible.python.activationScript": "/Users/hild/ansible/.venv-ansible-latest/bin/activate",
-    "ansible.python.interpreterPath": "/Users/hild/ansible/.venv-ansible-latest/bin/python3",
-    "black-formatter.args": [
-        "--line-length",
-        "150"
-    ],
+    "ansible.ansible.path": "/Users/hild/ansible/.config/latest/venv/bin/ansible",
+    "ansible.ansibleNavigator.path": "/Users/hild/ansible/.config/latest/venv/bin/ansible-navigator",
+    "ansible.validation.lint.path": "/Users/hild/ansible/.config/latest/venv/bin/ansible-lint",
+    "ansible.python.activationScript": "/Users/hild/ansible/.config/latest/venv/bin/activate",
+    "ansible.python.interpreterPath": "/Users/hild/ansible/.config/latest/venv/bin/python3",
     "ruff.importStrategy": "useBundled",
     "redhat.telemetry.enabled": false,
     "shellcheck.enable": true,
@@ -252,6 +253,7 @@
     "sqldeveloper.datagrid.fontFamily": "Menlo, Monaco, 'Courier New', monospace",
     "todo-tree.highlights.highlightDelay": 0,
     "todo-tree.tree.autoRefresh": true,
+    "todo-tree.ripgrep.ripgrep": "/opt/homebrew/bin/rg",
     "todo-tree.filtering.excludeGlobs": [
         "**/lib/**",
         "**/libraries/**",
@@ -288,5 +290,5 @@
         "FIXME",
         "REVIEW"
     ],
-    "chat.viewSessions.orientation": "stacked",
+    "chat.viewSessions.orientation": "stacked"
 }
