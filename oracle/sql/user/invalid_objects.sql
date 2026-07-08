@@ -1,19 +1,13 @@
 --------------------------------------------------------------------------------
 -- Author     : Florian Hild
 -- Created    : 24-05-2024
--- Description:
---------------------------------------------------------------------------------
-
---------------------------------------------------------------------------------
--- Author     : Florian Hild
--- Created    : 24-05-2024
--- Description:
+-- Description: Show invalid objects and a count per object type.
 --------------------------------------------------------------------------------
 
 set pagesize 2000
 set linesize 250
 
-col OWNER format a25;
+col OWNER format a25
 col OBJECT_NAME format a40
 col OBJECT_TYPE format a20
 

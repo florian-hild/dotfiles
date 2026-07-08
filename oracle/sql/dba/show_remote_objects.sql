@@ -1,7 +1,7 @@
 --------------------------------------------------------------------------------
 -- Author     : Florian Hild
 -- Created    : 24-05-2024
--- Description:
+-- Description: Show views and synonyms referencing remote objects (db links).
 --------------------------------------------------------------------------------
 
 set pagesize 2000
@@ -23,6 +23,5 @@ select owner,view_name,TEXT_VC
 
 select OWNER,SYNONYM_NAME,TABLE_OWNER,TABLE_NAME,DB_LINK
   from DBA_SYNONYMS
-  where DB_LINK != ' '
+  where DB_LINK IS NOT NULL
   order by OWNER,SYNONYM_NAME;
-

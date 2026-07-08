@@ -1,7 +1,7 @@
 --------------------------------------------------------------------------------
 -- Author     : Florian Hild
 -- Created    : 24-05-2024
--- Description:
+-- Description: Show synonyms that point to remote objects via database links.
 --------------------------------------------------------------------------------
 
 set pagesize 2000
@@ -16,5 +16,5 @@ col ORIGIN_CON_ID format 9999
 
 SELECT OWNER,SYNONYM_NAME,TABLE_OWNER,TABLE_NAME,DB_LINK,ORIGIN_CON_ID
   FROM dba_synonyms
-  WHERE DB_LINK != ' '
+  WHERE DB_LINK IS NOT NULL
   ORDER BY TABLE_OWNER,SYNONYM_NAME,TABLE_NAME ASC;

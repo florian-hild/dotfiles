@@ -1,7 +1,7 @@
 --------------------------------------------------------------------------------
 -- Author     : Florian Hild
 -- Created    : 24-05-2024
--- Description:
+-- Description: Show database and instance information.
 --------------------------------------------------------------------------------
 
 set pagesize 38
@@ -32,17 +32,18 @@ SELECT D.DB_UNIQUE_NAME,D.PLATFORM_NAME,D.CURRENT_SCN,I.STARTUP_TIME,D.CREATED
   ON UPPER(D.NAME) = UPPER(I.INSTANCE_NAME)
   ORDER BY D.NAME ASC;
 
-col COMMENT$ format a120
-col VALUE$   format a33
-col NAME     format a30
+col PROPERTY_NAME  format a30
+col PROPERTY_VALUE format a33
 
-SELECT NAME,VALUE$
-  FROM SYS.PROPS$
-  WHERE NAME = 'DEFAULT_PERMANENT_TABLESPACE'
-  OR NAME = 'DEFAULT_TBS_TYPE'
-  OR NAME = 'NLS_LANGUAGE'
-  OR NAME = 'NLS_CHARACTERSET'
-  OR NAME = 'NLS_NCHAR_CHARACTERSET'
-  OR NAME = 'NLS_RDBMS_VERSION'
-  OR NAME = 'GLOBAL_DB_NAME'
-  ORDER BY NAME ASC;
+SELECT PROPERTY_NAME,PROPERTY_VALUE
+  FROM DATABASE_PROPERTIES
+  WHERE PROPERTY_NAME IN (
+    'DEFAULT_PERMANENT_TABLESPACE',
+    'DEFAULT_TBS_TYPE',
+    'NLS_LANGUAGE',
+    'NLS_CHARACTERSET',
+    'NLS_NCHAR_CHARACTERSET',
+    'NLS_RDBMS_VERSION',
+    'GLOBAL_DB_NAME'
+  )
+  ORDER BY PROPERTY_NAME ASC;

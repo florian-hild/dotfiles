@@ -1,7 +1,7 @@
 --------------------------------------------------------------------------------
 -- Author     : Florian Hild
 -- Created    : 01-07-2024
--- Description: Show current used objects
+-- Description: Show current used (locked) objects
 --------------------------------------------------------------------------------
 
 set pagesize 2000 linesize 300
@@ -23,14 +23,8 @@ SELECT o.OWNER AS OBJECT_OWNER,
        s.CLIENT_IDENTIFIER,
        s.PROGRAM,
        s.OSUSER
-FROM V$LOCKED_OBJECT l,
-     DBA_OBJECTS o,
-     V$SESSION s,
-     V$PROCESS p,
-     V$SQL sq
-WHERE l.OBJECT_ID = o.OBJECT_ID
-  AND l.SESSION_ID = s.SID
-  AND s.PADDR = p.ADDR
-  AND s.SQL_ADDRESS = sq.ADDRESS
+FROM V$LOCKED_OBJECT l
+JOIN DBA_OBJECTS o ON l.OBJECT_ID = o.OBJECT_ID
+JOIN V$SESSION s ON l.SESSION_ID = s.SID
+LEFT JOIN V$SQL sq ON s.SQL_ADDRESS = sq.ADDRESS
 ORDER BY s.USERNAME,s.CLIENT_IDENTIFIER,s.PROGRAM,o.OBJECT_NAME ASC;
-

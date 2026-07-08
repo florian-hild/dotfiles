@@ -1,29 +1,21 @@
 --------------------------------------------------------------------------------
 -- Author     : Florian Hild
 -- Created    : 24-05-2024
--- Description:
+-- Description: Generate kill statements for all sessions of a given user.
 --------------------------------------------------------------------------------
 
 set pagesize 2000
 set linesize 250
 alter session set nls_date_format='DD-MON-YYYY HH24:MI:SS';
 
-col SID format 99999
-col SERIAL# format 999999
-col PROCESS format a15
 col USERNAME format a16
-col STATUS format a8
-col OSUSER format a10
-col PROGRAM format a60
-col CLIENT_IDENTIFIER format a17
-col LOGON_TIME format a20
-col IP format a15
-col " " format 999
+col CNT      format 9999
 
-SELECT count(USERNAME) " ",USERNAME
+SELECT count(*) AS CNT, USERNAME
   FROM v$session
-  WHERE USERNAME != ' '
-  GROUP BY USERNAME;
+  WHERE USERNAME IS NOT NULL
+  GROUP BY USERNAME
+  ORDER BY CNT DESC, USERNAME;
 
 accept username char prompt 'Please enter username: ';
 set echo off
@@ -42,7 +34,7 @@ DECLARE
   IS
     SELECT OSUSER,SID,SERIAL#,CLIENT_IDENTIFIER,PROGRAM,PROCESS
       FROM v$session
-      WHERE USERNAME = '&username'
+      WHERE USERNAME = UPPER(TRIM('&username'))
       ORDER BY PROGRAM,STATUS ASC;
 
 BEGIN

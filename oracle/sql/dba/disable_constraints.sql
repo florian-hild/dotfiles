@@ -1,7 +1,8 @@
 --------------------------------------------------------------------------------
 -- Author     : Florian Hild
 -- Created    : 24-05-2024
--- Description:
+-- Description: Generate disable and enable scripts for all enabled foreign
+--              key constraints of the current user (no shell commands needed).
 --------------------------------------------------------------------------------
 
 set echo off
@@ -20,6 +21,7 @@ SELECT '$HOME/constraints_enable_' || to_char(sysdate, 'yyyy-mm-dd_hh24-mi-ss') 
 
 col spoolname new_value spoolname
 SELECT '$HOME/constraints_disable_' || to_char(sysdate, 'yyyy-mm-dd_hh24-mi-ss') || '.sql' spoolname FROM dual;
+
 SPOOL '&spoolname'
 
 DECLARE
@@ -30,7 +32,7 @@ DECLARE
       WHERE owner = user
       AND constraint_type = 'R'
       AND status = 'ENABLED'
-      ORDER BY table_name,constraint_name ASC;
+      ORDER BY table_name, constraint_name ASC;
 
 BEGIN
   FOR constraint_record IN select_constraints
@@ -40,8 +42,29 @@ BEGIN
 END;
 /
 
-SPOOL off;
-!sed 's/disable/enable/g' &spoolname > &spoolname_ena
+SPOOL off
+
+SPOOL '&spoolname_ena'
+
+DECLARE
+  CURSOR select_constraints
+  IS
+    SELECT constraint_name, table_name
+      FROM dba_constraints
+      WHERE owner = user
+      AND constraint_type = 'R'
+      AND status = 'ENABLED'
+      ORDER BY table_name, constraint_name ASC;
+
+BEGIN
+  FOR constraint_record IN select_constraints
+  LOOP
+    dbms_output.put_line ('alter table ' || user || '.' || constraint_record.table_name || ' enable constraint ' || constraint_record.constraint_name || ';');
+  END LOOP;
+END;
+/
+
+SPOOL off
 
 select '&spoolname' from DUAL;
 select '&spoolname_ena' from DUAL;

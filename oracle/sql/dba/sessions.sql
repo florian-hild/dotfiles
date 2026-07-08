@@ -1,7 +1,7 @@
 --------------------------------------------------------------------------------
 -- Author     : Florian Hild
 -- Created    : 24-05-2024
--- Description:
+-- Description: Show all user sessions.
 --------------------------------------------------------------------------------
 
 set pagesize 2000
@@ -22,7 +22,7 @@ col MACHINE format a40
 
 SELECT USERNAME,OSUSER,MACHINE,SID,SERIAL#,CLIENT_IDENTIFIER,PROGRAM,PROCESS,STATUS,LOGON_TIME
   FROM v$session
-  WHERE USERNAME != ' '
+  WHERE USERNAME IS NOT NULL
   ORDER BY USERNAME,OSUSER,PROCESS,CLIENT_IDENTIFIER,PROGRAM,STATUS,LOGON_TIME,SID ASC;
 
 -- alter system kill session 'SID,SERIAL#';
