@@ -1,15 +1,18 @@
 ## Local .gitconfig example
 
 # [user]
-#   name = Florian Hild
-#   email = florian.hild@...
-#   signingKey = key_name
-
+#     name = Florian Hild
+#     email = florian.hild@...
+#     signingkey = ~/.ssh/id_ed25519.pub
 # [commit]
-#   gpgSign = true
-
+#     gpgsign = true
+# [tag]
+#     gpgsign = true
+# [gpg "ssh"]
+#     program = /Applications/1Password.app/Contents/MacOS/op-ssh-sign
+#     allowedSignersFile = ~/.ssh/allowed_signers
 # [include]
-#   path = ~/.dotfiles/.gitconfig
+#     path = ~/.dotfiles/.gitconfig
 
 
 [core]
@@ -82,7 +85,7 @@
 [branch]
     sort = -committerdate
 [gpg]
-    program = gpg
+    format = ssh
 [rebase]
     updateRefs = true
     autoStash = true
