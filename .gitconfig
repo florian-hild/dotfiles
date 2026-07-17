@@ -9,7 +9,7 @@
 #   gpgSign = true
 
 # [include]
-#   path = /home/hild/.dotfiles/.gitconfig
+#   path = ~/.dotfiles/.gitconfig
 
 
 [core]
@@ -27,7 +27,7 @@
 [merge]
     ff = false
 [diff]
-    compactionHeuristic = true
+    colorMoved = default
 [color]
     ui = auto
 [color "status"]
@@ -43,28 +43,38 @@
 [alias]
     a = add -v
     alias = config --get-regexp ^alias
+    amend = commit --amend --no-edit
     b = branch -va
-    bb = !"git for-each-ref --color --sort=-committerdate --format=$'%(color:red)%(ahead-behind:HEAD)\t%(color:blue)%(refname:short)\t%(color:yellow)%(committerdate:relative)\t%(color:default)%(describe)' refs/heads/ | sed 's/ /\t/' | column --separator=$'\t' --table --table-columns='Ahead,Behind,Branch Name,Last Commit,Description'"
+    # Branch overview as table (BSD/macOS column compatible)
+    bb = "!{ printf '\\033[31mAhead\\tBehind\\t\\033[34mBranch\\t\\033[33mLast Commit\\t\\033[mDescription\\n'; git for-each-ref --color=always --sort=-committerdate --format='%(color:red)%(ahead-behind:HEAD)%09%(color:blue)%(refname:short)%09%(color:yellow)%(committerdate:relative)%09%(color:reset)%(if)%(describe)%(then)%(describe)%(else)-%(end)' refs/heads | sed \"s/ /$(printf '\\t')/\"; } | column -t -s \"$(printf '\\t')\""
     cm = commit -m
     co = checkout
     d = diff --staged --color
-    db = !"git fetch --all --prune; git branch -vv | awk '/: gone]/{print $1}' | grep -v '+' | xargs git branch -D;"
+    # Delete local branches whose upstream is gone (locale-independent)
+    db = "!git fetch --all --prune && git for-each-ref --format '%(upstream:track);%(worktreepath);%(refname:short)' refs/heads | awk -F ';' '$1 == \"[gone]\" && $2 == \"\" { print $3 }' | xargs git branch -D"
     dh = diff HEAD
     f = fetch --all -Pp
     lg = log --all --color --graph --abbrev-commit --pretty=format:'%C(yellow)%h %Cred%ad %Cblue%an%Cgreen%d %Creset%s' --date=format:'%Y-%m-%d %H:%M'
     lgf = log --all --color --graph --abbrev-commit --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --date=relative -p
     lgg = log  --all --color --graph --abbrev-commit --pretty=format:'%C(yellow)%h %Cred%ad %Cblue%an%Cgreen%d %Creset%s' --date=format:'%Y-%m-%d %H:%M' --name-status
     pb = push -u origin HEAD
+    pf = push --force-with-lease --force-if-includes
     pl = pull --rebase
+    # Rebase current branch onto origin's default branch (fallback: origin/main)
+    rbm = "!git fetch origin && git rebase $(git symbolic-ref -q --short refs/remotes/origin/HEAD 2>/dev/null || echo origin/main)"
     st = status --short
-    staash = stash --all -u
+    staash = stash --all
     w = worktree
     wl = worktree list
     wr = worktree remove
 [rerere]
-	enabled = true
+    enabled = true
 [init]
     defaultBranch = main
+[fetch]
+    prune = true
+[push]
+    autoSetupRemote = true
 [credential "https://github.com"]
     helper = !gh auth git-credential
 [credential "https://gist.github.com"]
@@ -72,6 +82,7 @@
 [branch]
     sort = -committerdate
 [gpg]
-	program = gpg
+    program = gpg
 [rebase]
-	updateRefs = true
+    updateRefs = true
+    autoStash = true
