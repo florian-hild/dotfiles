@@ -1,5 +1,5 @@
 # Ansible
-ansible>=8.0.0,<9.0.0
+ansible>=14.2.0,<14.3.0
 ansible-navigator
 
 # Linting and validation
