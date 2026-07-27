@@ -64,6 +64,7 @@ fi
 
 # UNIX paths
 setPath "/usr/local/bin"
+setPath "${HOME}/.local/bin"
 
 # Local host paths
 if [[ -n "${local_paths}" ]]; then
