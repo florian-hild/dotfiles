@@ -121,7 +121,6 @@ proguard/
 # Ignore logs and databases
 *.log
 *.log.*
-*.sql
 *.sqlite
 *.db*
 
