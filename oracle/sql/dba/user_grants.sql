@@ -1,7 +1,7 @@
 --------------------------------------------------------------------------------
 -- Author     : Florian Hild
 -- Created    : 24-05-2024
--- Description:
+-- Description: Show object privileges granted to a given user
 --------------------------------------------------------------------------------
 
 set pagesize 2000

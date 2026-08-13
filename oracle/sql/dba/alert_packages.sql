@@ -7,7 +7,7 @@
 set pagesize 2000 linesize 250
 
 col OWNER format a20
-col OBJECT_NAME format a10
+col OBJECT_NAME format a30
 col PROCEDURE_NAME format a20
 col OBJECT_TYPE format a10
 

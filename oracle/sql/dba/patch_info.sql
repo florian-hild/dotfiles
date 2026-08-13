@@ -1,7 +1,7 @@
 --------------------------------------------------------------------------------
 -- Author     : Florian Hild
 -- Created    : 18-06-2025
--- Description:
+-- Description: Show applied SQL patches and component registry
 --------------------------------------------------------------------------------
 
 set pagesize 2000

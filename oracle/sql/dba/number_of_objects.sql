@@ -1,7 +1,7 @@
 --------------------------------------------------------------------------------
 -- Author     : Florian Hild
 -- Created    : 24-05-2024
--- Description:
+-- Description: Object count per owner and object type
 --------------------------------------------------------------------------------
 
 set pagesize 2000

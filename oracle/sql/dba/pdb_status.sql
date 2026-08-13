@@ -1,7 +1,7 @@
 --------------------------------------------------------------------------------
 -- Author     : Florian Hild
 -- Created    : 24-05-2024
--- Description:
+-- Description: Show PDB status, refresh mode and SCNs
 --------------------------------------------------------------------------------
 
 set linesize 250

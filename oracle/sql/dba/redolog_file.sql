@@ -1,7 +1,7 @@
 --------------------------------------------------------------------------------
 -- Author     : Florian Hild
 -- Created    : 24-05-2024
--- Description:
+-- Description: Show redo log groups, members and status
 --------------------------------------------------------------------------------
 
 set linesize 250

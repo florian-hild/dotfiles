@@ -1,7 +1,7 @@
 --------------------------------------------------------------------------------
 -- Author     : Florian Hild
 -- Created    : 24-05-2024
--- Description:
+-- Description: Show scheduler jobs (non-SYS) with schedule and run info
 --------------------------------------------------------------------------------
 
 alter session set nls_date_format='DD-MON-YYYY HH24:MI:SS';
@@ -24,12 +24,10 @@ SET WRAP OFF
 
 SELECT
   JOB_NAME,
-  -- STATE,
   OWNER,
   JOB_TYPE,
   JOB_ACTION,
   REPEAT_INTERVAL,
-  -- to_char(START_DATE,'DD-Mon-YYYY HH24:MI') START_DATE,
   to_char(LAST_START_DATE,'DD-Mon-YYYY HH24:MI') LAST_START_DATE,
   to_char(NEXT_RUN_DATE,'DD-Mon-YYYY HH24:MI') NEXT_RUN_DATE,
   RUN_COUNT as "RUN CTN",

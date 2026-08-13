@@ -1,7 +1,8 @@
 --------------------------------------------------------------------------------
 -- Author     : Florian Hild
 -- Created    : 24-05-2024
--- Description:
+-- Description: Show selected packages (DBMS_ALERT, DBMS_MONITOR, DBMS_CRYPTO,
+--              PERF) with their procedures
 --------------------------------------------------------------------------------
 
 set pagesize 2000

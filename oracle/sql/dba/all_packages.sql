@@ -1,7 +1,7 @@
 --------------------------------------------------------------------------------
 -- Author     : Florian Hild
 -- Created    : 24-05-2024
--- Description:
+-- Description: List all packages with their procedures (paged output)
 --------------------------------------------------------------------------------
 
 set pagesize 38

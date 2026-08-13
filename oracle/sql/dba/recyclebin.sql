@@ -1,7 +1,8 @@
 --------------------------------------------------------------------------------
 -- Author     : Florian Hild
 -- Created    : 24-05-2024
--- Description:
+-- Description: Show recycle bin contents (restore with FLASHBACK TABLE,
+--              purge with PURGE DBA_RECYCLEBIN)
 --------------------------------------------------------------------------------
 
 set pagesize 2000

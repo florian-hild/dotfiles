@@ -1,7 +1,7 @@
 --------------------------------------------------------------------------------
 -- Author     : Florian Hild
 -- Created    : 24-05-2024
--- Description:
+-- Description: Show LOB segments of non-Oracle-maintained schemas
 --------------------------------------------------------------------------------
 
 set pagesize 2000
@@ -14,13 +14,8 @@ col COLUMN_NAME format a30
 col SEGMENT_NAME format a30
 col INDEX_NAME format a30
 
-SELECT OWNER,TABLE_NAME,COLUMN_NAME,TABLESPACE_NAME,SEGMENT_NAME,INDEX_NAME
-  FROM dba_lobs
-  WHERE OWNER != 'SYS'
-  and OWNER != 'XDB'
-  and OWNER != 'SYSTEM'
-  and OWNER != 'MDSYS'
-  and OWNER != 'ORDDATA'
-  and OWNER != 'WMSYS'
-  and OWNER != 'GSMADMIN_INTERNAL'
-  ORDER BY OWNER,TABLE_NAME,TABLESPACE_NAME ASC;
+SELECT l.OWNER,l.TABLE_NAME,l.COLUMN_NAME,l.TABLESPACE_NAME,l.SEGMENT_NAME,l.INDEX_NAME
+  FROM dba_lobs l
+  JOIN dba_users u ON u.username = l.owner
+  WHERE u.oracle_maintained = 'N'
+  ORDER BY l.OWNER,l.TABLE_NAME,l.TABLESPACE_NAME ASC;

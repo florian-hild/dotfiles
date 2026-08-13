@@ -1,7 +1,7 @@
 --------------------------------------------------------------------------------
 -- Author     : Florian Hild
 -- Created    : 24-05-2024
--- Description:
+-- Description: Show current/max utilization of sessions and processes
 --------------------------------------------------------------------------------
 
 set linesize 250

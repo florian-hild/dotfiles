@@ -41,7 +41,7 @@ BEGIN
   FOR session_record IN select_sessions
   LOOP
     dbms_output.put_line ('REM CLIENT_IDENTIFIER: "' || session_record.client_identifier || '" PROGRAM: "' || session_record.program || '" OSUSER: "' || session_record.osuser || '" PROCESS: "' || session_record.process || '"');
-    dbms_output.put_line ('alter system kill session ''' || session_record.sid || ',' || session_record.serial# || ''';');
+    dbms_output.put_line ('alter system kill session ''' || session_record.sid || ',' || session_record.serial# || ''' immediate;');
   END LOOP;
 END;
 /

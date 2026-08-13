@@ -1,7 +1,7 @@
 --------------------------------------------------------------------------------
 -- Author     : Florian Hild
 -- Created    : 24-05-2024
--- Description:
+-- Description: Show sessions of a given user (substring match)
 --------------------------------------------------------------------------------
 
 set pagesize 2000

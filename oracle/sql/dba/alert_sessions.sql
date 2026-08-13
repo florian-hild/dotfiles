@@ -1,7 +1,7 @@
 --------------------------------------------------------------------------------
 -- Author     : Florian Hild
 -- Created    : 03-07-2024
--- Description: Show all dbms_alert package
+-- Description: Show sessions currently executing DBMS_ALERT calls
 --------------------------------------------------------------------------------
 
 set pagesize 2000 linesize 250

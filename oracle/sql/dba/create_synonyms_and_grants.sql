@@ -1,7 +1,8 @@
 --------------------------------------------------------------------------------
 -- Author     : Florian Hild
 -- Created    : 24-05-2024
--- Description:
+-- Description: Generate synonyms and grants for all objects of the current
+--              user to a destination user.
 --------------------------------------------------------------------------------
 
 set echo off
@@ -14,9 +15,6 @@ set linesize 250
 set trimspool on
 set wrap off
 SET SERVEROUTPUT ON SIZE 1000000
-
-alter session set "_fix_control" = '8528517:off';
-alter session set "_fix_control" = '7534027:off';
 
 accept dstuser char prompt 'Please enter db username for synonym destination: '
 
@@ -31,7 +29,7 @@ DECLARE
       FROM user_objects
       -- Nicht verwendete Objekte
       WHERE OBJECT_TYPE not in ('INDEX','TRIGGER','DATABASE LINK','LOB')
-      AND  OBJECT_NAME NOT LIKE 'SYS_%$'
+      AND  OBJECT_NAME NOT LIKE 'SYS\_%' ESCAPE '\'
       ORDER BY OBJECT_NAME,OBJECT_TYPE ASC;
   synonym_tab VARCHAR2(100);
 BEGIN

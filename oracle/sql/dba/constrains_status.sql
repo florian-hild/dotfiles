@@ -1,7 +1,7 @@
 --------------------------------------------------------------------------------
 -- Author     : Florian Hild
 -- Created    : 20-11-2024
--- Description:
+-- Description: Show status of foreign key constraints for a schema
 --------------------------------------------------------------------------------
 
 set pagesize 2000

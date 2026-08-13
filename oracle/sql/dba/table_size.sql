@@ -27,4 +27,4 @@ SELECT seg.OWNER,
    AND seg.SEGMENT_NAME = tab.TABLE_NAME
   WHERE seg.OWNER not in ('SYS')
   AND (seg.BYTES > (1024 * 1024 * 1024) OR seg.EXTENTS > 1)
-  ORDER BY seg.bytes ASC;
+  ORDER BY seg.BYTES ASC;

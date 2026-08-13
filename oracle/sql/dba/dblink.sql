@@ -1,7 +1,7 @@
 --------------------------------------------------------------------------------
 -- Author     : Florian Hild
 -- Created    : 24-05-2024
--- Description:
+-- Description: Search database links by name, username or host
 --------------------------------------------------------------------------------
 
 set pagesize 2000

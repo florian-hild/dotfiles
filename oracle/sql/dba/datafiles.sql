@@ -1,7 +1,7 @@
 --------------------------------------------------------------------------------
 -- Author     : Florian Hild
 -- Created    : 24-05-2024
--- Description:
+-- Description: Show datafiles with size, autoextend and status
 --------------------------------------------------------------------------------
 
 set pagesize 2000
@@ -15,6 +15,8 @@ column AUTOEXTENSIBLE   format a5
 column "Total MB"       format 99,999,999
 column "Max extends MB" format 99,999,999
 
-SELECT FILE_ID,TABLESPACE_NAME,FILE_NAME,STATUS,AUTOEXTENSIBLE,BYTES / 1024 / 1024 "Total MB",MAXBYTES / 1024 / 1024 "Max extends MB"
+SELECT FILE_ID,TABLESPACE_NAME,FILE_NAME,STATUS,AUTOEXTENSIBLE,
+       round(BYTES / 1048576) "Total MB",
+       round(decode(AUTOEXTENSIBLE, 'YES', MAXBYTES, BYTES) / 1048576) "Max extends MB"
   FROM dba_data_files
   ORDER BY TABLESPACE_NAME,FILE_ID ASC;

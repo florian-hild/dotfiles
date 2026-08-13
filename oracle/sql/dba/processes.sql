@@ -1,7 +1,7 @@
 --------------------------------------------------------------------------------
 -- Author     : Florian Hild
 -- Created    : 24-05-2024
--- Description:
+-- Description: Show background/server processes with PGA usage and tracefile
 --------------------------------------------------------------------------------
 
 set linesize 250

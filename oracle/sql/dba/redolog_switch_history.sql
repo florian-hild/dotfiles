@@ -1,7 +1,7 @@
 --------------------------------------------------------------------------------
 -- Author     : Florian Hild
 -- Created    : 24-05-2024
--- Description:
+-- Description: Redo log switch count per day and hour
 --------------------------------------------------------------------------------
 
 set pagesize 2000

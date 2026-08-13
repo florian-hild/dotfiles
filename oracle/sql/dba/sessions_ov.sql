@@ -1,7 +1,8 @@
 --------------------------------------------------------------------------------
 -- Author     : Florian Hild
 -- Created    : 24-05-2024
--- Description:
+-- Description: Session count overview grouped by user, machine, client
+--              identifier and program (with grand total)
 --------------------------------------------------------------------------------
 
 set pagesize 2000

@@ -1,7 +1,7 @@
 --------------------------------------------------------------------------------
 -- Author     : Florian Hild
 -- Created    : 24-05-2024
--- Description:
+-- Description: Show RMAN operation status history
 --------------------------------------------------------------------------------
 
 set pagesize 2000
