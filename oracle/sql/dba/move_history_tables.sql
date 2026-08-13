@@ -1,7 +1,10 @@
 --------------------------------------------------------------------------------
 -- Author     : Florian Hild
 -- Created    : 24-05-2024
--- Description:
+-- Description: Generate ALTER TABLE MOVE script for %_H (history) tables not
+--              yet in the target tablespace. MOVE ... UPDATE INDEXES keeps
+--              the tables' indexes usable during the move.
+--              Leave owner blank for current user.
 --------------------------------------------------------------------------------
 
 set echo off
@@ -13,31 +16,29 @@ set pagesize 0
 set linesize 250
 set trimspool on
 set wrap off
-SET SERVEROUTPUT ON SIZE 1000000
 
+accept owners char prompt 'Enter owner(s) comma-separated (leave blank for current user): '
 accept tablespace char prompt 'Please enter tablespace for history tables: '
+
+whenever sqlerror exit failure
 
 col spoolname new_value spoolname
 SELECT '$HOME/move_history_tables_' || to_char(sysdate, 'yyyy-mm-dd_hh24-mi-ss') || '.sql' spoolname FROM dual;
+
 SPOOL '&spoolname'
-
-DECLARE
-  CURSOR all_history_tables
-  IS
-    SELECT table_name
-      FROM user_tables
-      WHERE table_name LIKE '%\_H' ESCAPE'\'
-      AND TABLESPACE_NAME != UPPER('&tablespace')
-      ORDER BY TABLE_NAME;
-
-BEGIN
-  FOR table_record IN all_history_tables
-  LOOP
-    dbms_output.put_line ('ALTER TABLE ' || table_record.table_name || ' move tablespace ' || UPPER('&tablespace') || ';');
-  END LOOP;
-END;
-/
-
-SPOOL off;
+PROMPT WHENEVER SQLERROR CONTINUE
+SELECT 'ALTER TABLE "' || owner || '"."' || table_name || '" MOVE TABLESPACE ' || UPPER('&tablespace') || ' UPDATE INDEXES;'
+  FROM dba_tables
+  WHERE (('&owners' IS NULL AND owner = user)
+         OR INSTR(',' || REPLACE(UPPER('&owners'), ' ') || ',',
+                  ',' || owner || ',') > 0)
+    AND table_name LIKE '%\_H' ESCAPE '\'
+    AND tablespace_name != UPPER('&tablespace')
+    AND partitioned = 'NO'   -- partitioned tables need MOVE PARTITION
+    AND temporary = 'N'
+    AND iot_type IS NULL     -- IOTs have no MOVE TABLESPACE
+  ORDER BY owner, table_name;
+PROMPT EXIT
+SPOOL off
 
 select '&spoolname' from DUAL;
