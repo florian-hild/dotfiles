@@ -1,4 +1,8 @@
-#!/usr/bin/env python3
+#!/usr/bin/env -S uv run --quiet --script
+# /// script
+# requires-python = ">=3.12"
+# dependencies = ["passlib>=1.7"]
+# ///
 
 """
 -------------------------------------------------------------------------------
@@ -9,25 +13,49 @@ Description   : Generate Linux User Encrypted Password for Ansible with python3
 -------------------------------------------------------------------------------
 """
 
-__VERSION__ = '1.0.0'
+__VERSION__ = '2.1.0'
 
+import argparse
 import getpass
-import os
-import base64
-import ctypes
+import sys
+
+from passlib.hash import sha512_crypt
+
+def parse_args():
+  parser = argparse.ArgumentParser(
+    description='Generate Linux user encrypted password (SHA-512 crypt) for Ansible.',
+    formatter_class=argparse.RawDescriptionHelpFormatter,
+    epilog="""\
+Examples:
+  # Interactive: prompts for password (hidden) and confirmation
+  %(prog)s
+  Password:
+  Confirm:
+  $6$rounds=656000$juKkQ033lUS9wsMG$DAPfFbWVZTqZM...
+
+  # Use the hash in an Ansible task
+  - name: Create user
+    ansible.builtin.user:
+      name: deploy
+      password: "{{ deploy_password_hash }}"
+""",
+  )
+  parser.add_argument(
+    '-V', '--version',
+    action='version',
+    version=f'%(prog)s {__VERSION__}',
+  )
+  return parser.parse_args()
 
 def main():
-  pw=getpass.getpass()
+  parse_args()
+  pw = getpass.getpass()
 
-  if ( pw == getpass.getpass("Confirm: ") ):
-    crypt = ctypes.CDLL("libcrypt.so.2").crypt
-    crypt.restype = ctypes.c_char_p
-    salt = base64.b64encode(os.urandom(16), altchars=b"./").rstrip(b"=")
-
-    print("\n"+crypt(pw.encode('utf-8'), b"$6$"+salt).decode())
+  if pw == getpass.getpass("Confirm: "):
+    print("\n" + sha512_crypt.hash(pw))
   else:
-    print("Error: Passwords do not match.")
-    exit(1)
+    print("Error: Passwords do not match.", file=sys.stderr)
+    sys.exit(1)
 
 if __name__ == '__main__':
   main()
