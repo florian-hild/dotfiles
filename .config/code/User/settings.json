@@ -204,8 +204,6 @@
     },
     "extensions.autoUpdate": "on",
     "gitlens.telemetry.enabled": false,
-    "gitlens.ai.model": "vscode",
-    "gitlens.ai.vscode.model": "copilot:gpt-4.1",
     "githubPullRequests.terminalLinksHandler": "github",
     "githubPullRequests.pullBranch": "never",
     "github.copilot.nextEditSuggestions.enabled": true,
@@ -229,7 +227,9 @@
         "open": true,
         "git ls-files": true,
         "git fetch": true,
-        "gh": true
+        "gh": true,
+        "ansible-lint": true,
+        "awk": true
     },
     "ansible.ansible.useFullyQualifiedCollectionNames": true,
     "ansible.validation.lint.enabled": true,
@@ -290,5 +290,15 @@
         "FIXME",
         "REVIEW"
     ],
-    "chat.viewSessions.orientation": "stacked"
+    "claudeCode.preferredLocation": "panel",
+    "chat.viewSessions.orientation": "stacked",
+    "githubLocalActions.dockerDesktopPath": "/Applications/Docker.app",
+    "yaml.disableSchemaDetection": [
+        "**/.github/workflows/*.yml",
+        "**/.github/workflows/*.yaml",
+        "**/.gitea/workflows/*.yml",
+        "**/.gitea/workflows/*.yaml",
+        "**/.forgejo/workflows/*.yml",
+        "**/.forgejo/workflows/*.yaml"
+    ]
 }
