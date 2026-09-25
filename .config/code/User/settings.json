@@ -119,6 +119,9 @@
     "git.pruneOnFetch": true,
     "git.fetchOnPull": true,
     "git.rebaseWhenSync": false,
+    "git.scanRepositories": [
+        ".worktree/*/*"
+    ],
     "debug.toolBarLocation": "docked",
     "security.workspace.trust.untrustedFiles": "open",
     "telemetry.telemetryLevel": "off",
@@ -229,7 +232,11 @@
         "git fetch": true,
         "gh": true,
         "ansible-lint": true,
-        "awk": true
+        "awk": true,
+        "git rev-parse": true,
+        "git rev-list": true,
+        "git for-each-ref": true,
+        "git ls-tree": true
     },
     "ansible.ansible.useFullyQualifiedCollectionNames": true,
     "ansible.validation.lint.enabled": true,
@@ -291,7 +298,6 @@
         "REVIEW"
     ],
     "claudeCode.preferredLocation": "panel",
-    "chat.viewSessions.orientation": "stacked",
     "githubLocalActions.dockerDesktopPath": "/Applications/Docker.app",
     "yaml.disableSchemaDetection": [
         "**/.github/workflows/*.yml",
@@ -300,5 +306,6 @@
         "**/.gitea/workflows/*.yaml",
         "**/.forgejo/workflows/*.yml",
         "**/.forgejo/workflows/*.yaml"
-    ]
+    ],
+    "chat.viewSessions.orientation": "stacked"
 }

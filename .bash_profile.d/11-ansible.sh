@@ -31,3 +31,24 @@ if [[ -n "${ANSIBLE_BASE// }" ]]; then
     # PATH
     export PATH="${ANSIBLE_VENV}/bin:${PATH}"
 fi
+
+# Point the inventory variables at a git worktree of the environments repo,
+# so playbooks can run against a branch without switching the main checkout.
+# Usage: invwt <branch>   (e.g. invwt fix/fega)   |   invwt   (reset to main checkout)
+function invwt() {
+  local base="${ANSIBLE_BASE}/environments"
+  if [[ -n "${1}" ]]; then
+    if [[ ! -d "${base}/.worktree/${1}" ]]; then
+      echo "invwt: worktree not found: ${base}/.worktree/${1}" >&2
+      git -C "${base}" worktree list >&2
+      return 1
+    fi
+    base="${base}/.worktree/${1}"
+  fi
+  export INVENTORIES="${base}"
+  export CUST="${INVENTORIES}/customers"
+  export INT="${INVENTORIES}/intern"
+  export TEST="${INVENTORIES}/test"
+  export ANSIBLE_INVENTORY="${TEST}"
+  echo "INVENTORIES=${INVENTORIES}"
+}

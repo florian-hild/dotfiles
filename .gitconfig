@@ -48,15 +48,19 @@
     alias = config --get-regexp ^alias
     amend = commit --amend --no-edit
     b = branch -va
+    branches = branch -vv
     # Branch overview as table (BSD/macOS column compatible)
     bb = "!{ printf '\\033[31mAhead\\tBehind\\t\\033[34mBranch\\t\\033[33mLast Commit\\t\\033[mDescription\\n'; git for-each-ref --color=always --sort=-committerdate --format='%(color:red)%(ahead-behind:HEAD)%09%(color:blue)%(refname:short)%09%(color:yellow)%(committerdate:relative)%09%(color:reset)%(if)%(describe)%(then)%(describe)%(else)-%(end)' refs/heads | sed \"s/ /$(printf '\\t')/\"; } | column -t -s \"$(printf '\\t')\""
     cm = commit -m
     co = checkout
     d = diff --staged --color
-    # Delete local branches whose upstream is gone (locale-independent)
-    db = "!git fetch --all --prune && git for-each-ref --format '%(upstream:track);%(worktreepath);%(refname:short)' refs/heads | awk -F ';' '$1 == \"[gone]\" && $2 == \"\" { print $3 }' | xargs git branch -D"
+    dc = diff --check
+    # Remove merged worktrees, then delete local branches whose upstream is gone
+    db = "!git fetch --all --prune && base=$(git symbolic-ref -q --short refs/remotes/origin/HEAD 2>/dev/null || echo origin/main) && root=$(git rev-parse --show-toplevel) && git for-each-ref --format='%(refname:short);%(upstream:track);%(objectname);%(worktreepath)' refs/heads | while IFS=';' read -r branch track head path; do if test -n \"$path\" && test \"$path\" != \"$root\"; then if git merge-base --is-ancestor \"$head\" \"$base\"; then git worktree remove -- \"$path\"; elif test \"$track\" = '[gone]' && command -v gh >/dev/null; then gh pr list --state merged --head \"$branch\" --base \"${base#origin/}\" --json headRefOid,mergeCommit --jq '.[] | .headRefOid, .mergeCommit.oid' 2>/dev/null | while IFS= read -r pr_head && IFS= read -r merge_oid; do if test \"$pr_head\" = \"$head\" && git merge-base --is-ancestor \"$merge_oid\" \"$base\"; then git worktree remove -- \"$path\"; break; fi; done; fi; fi; done; git for-each-ref --format '%(upstream:track);%(worktreepath);%(refname:short)' refs/heads | awk -F ';' '$1 == \"[gone]\" && $2 == \"\" { print $3 }' | xargs git branch -D"
     dh = diff HEAD
+    ds = diff --stat
     f = fetch --all -Pp
+    last = log -1 --stat
     lg = log --all --color --graph --abbrev-commit --pretty=format:'%C(yellow)%h %Cred%ad %Cblue%an%Cgreen%d %Creset%s' --date=format:'%Y-%m-%d %H:%M'
     lgf = log --all --color --graph --abbrev-commit --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --date=relative -p
     lgg = log  --all --color --graph --abbrev-commit --pretty=format:'%C(yellow)%h %Cred%ad %Cblue%an%Cgreen%d %Creset%s' --date=format:'%Y-%m-%d %H:%M' --name-status
@@ -65,10 +69,12 @@
     pl = pull --rebase
     # Rebase current branch onto origin's default branch (fallback: origin/main)
     rbm = "!git fetch origin && git rebase $(git symbolic-ref -q --short refs/remotes/origin/HEAD 2>/dev/null || echo origin/main)"
+    s = status -sb
     st = status --short
     staash = stash --all
     w = worktree
     wl = worktree list
+    wp = worktree prune -v
     wr = worktree remove
 [rerere]
     enabled = true

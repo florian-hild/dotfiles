@@ -15,3 +15,4 @@ passlib        # Password hashing (user module)
 lxml           # XML/HTML processing (xml module)
 pywinrm        # WinRM connections (ansible.windows)
 PyMySQL        # MySQL/MariaDB (community.mysql)
+python-ldap
