@@ -167,7 +167,7 @@
           "id": "status",
           "type": "block",
           "content": {
-            "mod": "workspace-status"
+            "mod": "status-tmux"
           },
           "size": {
             "px": 28
@@ -186,6 +186,7 @@
     "width": 1,
     "color": "border"
   },
+  "terminal_menu": "paste-menu",
   "titlebar": "none",
   "traffic_lights": [
     12,
