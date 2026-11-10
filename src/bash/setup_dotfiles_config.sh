@@ -66,3 +66,23 @@ ln -sfn "${DOT_PATH}"/.terraformrc "${HOME}"/.terraformrc
 
 [[ ! -d ${HOME}/bin ]] && ln -sn "${DOT_PATH}"/bin "${HOME}"/bin
 
+# Herdr: link only the files that belong to the user. The app home also holds runtime
+# state (shared.json, view.json, data/) and files the app rewrites on every start
+# (AGENTS.md, *.d.ts, shipped layouts and mods), none of which belong in the repo.
+HERDR_HOME="${HOME}/.config/herdr-app"
+HERDR_SRC="${DOT_PATH}/.config/herdr-app"
+if [[ -d ${HERDR_HOME} && -d ${HERDR_SRC} ]]; then
+  echo "Setup herdr symlinks"
+  for src in "${HERDR_SRC}"/*.json "${HERDR_SRC}"/layouts/*.json "${HERDR_SRC}"/mods/*; do
+    [[ -e ${src} ]] || continue
+    dest="${HERDR_HOME}/${src#"${HERDR_SRC}"/}"
+    # ln -sfn would replace a real file, or put the link inside a real directory.
+    if [[ -e ${dest} && ! -L ${dest} ]]; then
+      echo "Skip ${dest}: exists and is not a symlink"
+      continue
+    fi
+    mkdir -p "$(dirname "${dest}")"
+    ln -sfn "${src}" "${dest}"
+  done
+fi
+

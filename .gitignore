@@ -139,3 +139,6 @@ proguard/
 *.tar.gz
 *.tgz
 *.zip
+
+# Herdr writes its type definitions into every mod folder
+.config/herdr-app/**/gpui-kit.d.ts
