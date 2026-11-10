@@ -236,7 +236,8 @@
         "git rev-parse": true,
         "git rev-list": true,
         "git for-each-ref": true,
-        "git ls-tree": true
+        "git ls-tree": true,
+        "yamllint": true
     },
     "ansible.ansible.useFullyQualifiedCollectionNames": true,
     "ansible.validation.lint.enabled": true,
@@ -307,5 +308,10 @@
         "**/.forgejo/workflows/*.yml",
         "**/.forgejo/workflows/*.yaml"
     ],
-    "chat.viewSessions.orientation": "stacked"
+    "workbench.secondarySideBar.defaultVisibility": "visible",
+    "chat.viewSessions.orientation": "stacked",
+    "makefile.configureOnOpen": false,
+    "gradle.autoDetect": "off",
+    "gitlens.gitkraken.mcp.autoEnabled": false,
+    "gitlens.launchpad.indicator.enabled": false
 }
