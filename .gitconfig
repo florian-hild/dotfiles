@@ -84,10 +84,12 @@
     prune = true
 [push]
     autoSetupRemote = true
+# gh ist nicht auf allen Hosts installiert (z.B. suprhel9); ohne die Pruefung meldet git
+# "gh: command not found" und fragt trotzdem nach den Zugangsdaten.
 [credential "https://github.com"]
-    helper = !gh auth git-credential
+    helper = !command -v gh >/dev/null 2>&1 && gh auth git-credential
 [credential "https://gist.github.com"]
-    helper = !gh auth git-credential
+    helper = !command -v gh >/dev/null 2>&1 && gh auth git-credential
 [branch]
     sort = -committerdate
 [gpg]
