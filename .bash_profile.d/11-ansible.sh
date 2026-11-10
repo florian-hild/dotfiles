@@ -10,7 +10,7 @@ if [[ -n "${ANSIBLE_BASE// }" ]]; then
 
     # Ansible configuration
     export ANSIBLE_CACHE_PLUGIN_CONNECTION="${ANSIBLE_BASE}/fact_cache"
-    export ANSIBLE_COLLECTIONS_PATHS="${ANSIBLE_HOME}/collections"
+    export ANSIBLE_COLLECTIONS_PATH="${ANSIBLE_HOME}/collections"
     export ANSIBLE_CONFIG="${ANSIBLE_BASE}/ansible.cfg"
     export ANSIBLE_HOST_KEY_CHECKING="${ANSIBLE_HOST_KEY_CHECKING:-"True"}"
     export ANSIBLE_ROLES_PATH="${ANSIBLE_BASE}/roles_wip:${ANSIBLE_BASE}/roles"
