@@ -26,6 +26,10 @@ const busyNow = () => {
 const OPEN_KEY = "prs.groups.open";
 const SECTIONS_KEY = "prs.sections.closed";
 const NOTES_KEY = "prs.notes.closed";
+const SEEN_KEY = "prs.seen";
+const keyOf = (pr) => pr.id ?? `${pr.repo}#${pr.number}`;
+// Anything that should count as "something changed" for an item.
+const sigOf = (pr) => [pr.updated, pr.decision, pr.ci, pr.unresolved, pr.merge_state, pr.state, pr.draft].join("|");
 // What a tab lists. Notifications of merged PRs are done: they stay unread on GitHub but are left out here,
 // so the Inbox only shows threads that still need a look. Undefined while the data has no such list yet.
 const itemsOf = (data, id) => data?.[id]?.filter((x) => id !== "notes" || x.state !== "MERGED");
@@ -66,10 +70,13 @@ export default class Prs extends View {
     try { this.closedSections = new Set(JSON.parse(localStorage.getItem(SECTIONS_KEY) ?? "[]")); } catch {}
     this.closedNotes = new Set();
     try { this.closedNotes = new Set(JSON.parse(localStorage.getItem(NOTES_KEY) ?? "[]")); } catch {}
+    this.seen = {};
+    try { this.seen = JSON.parse(localStorage.getItem(SEEN_KEY) ?? "{}"); } catch {}
     try {
       const cached = localStorage.getItem(CACHE_KEY);
       if (cached && !shared("prs.data")) setShared("prs.data", JSON.parse(cached));
     } catch {}
+    this.publishChanged(shared("prs.data"));
     cx.timer.every(INTERVAL_MS, (cx) => this.refresh(cx, false));
     this.refresh(cx, false);
   }
@@ -88,6 +95,7 @@ export default class Prs extends View {
         try { localStorage.setItem(CACHE_KEY, r.stdout); } catch {}
         setShared("prs.error", null);
         setShared("prs.data", parsed);
+        this.publishChanged(parsed);
       } catch (e) {
         setShared("prs.error", String(e.message ?? e));
       }
@@ -118,6 +126,50 @@ export default class Prs extends View {
         }
       }
     });
+  }
+
+  // Several panel instances share the persisted state, so re-read it before reading or writing acknowledgements.
+  loadSeen() {
+    try { this.seen = JSON.parse(localStorage.getItem(SEEN_KEY) ?? "{}"); } catch {}
+  }
+
+  saveSeen() {
+    try { localStorage.setItem(SEEN_KEY, JSON.stringify(this.seen)); } catch {}
+  }
+
+  markSeen(tabs, data) {
+    this.loadSeen();
+    for (const id of tabs) this.seen[id] = Object.fromEntries((itemsOf(data, id) ?? []).map((pr) => [keyOf(pr), sigOf(pr)]));
+    this.saveSeen();
+    this.publishChanged(data);
+  }
+
+  // Shared so other mods (e.g. the tab bar's PRs button) can show the indicator while the panel is collapsed.
+  publishChanged(data) {
+    const total = TABS.reduce((n, x) => n + this.changedCount(x.id, data), 0);
+    if (shared("prs.changed") !== total) setShared("prs.changed", total);
+  }
+
+  isChanged(pr) {
+    const seen = this.seen[this.tab];
+    return Boolean(seen) && this.tab !== "notes" && seen[keyOf(pr)] !== sigOf(pr);
+  }
+
+  // Acknowledge a single item (clicked) without touching the rest of the tab.
+  markSeenOne(pr) {
+    this.loadSeen();
+    if (!this.seen[this.tab]) return;
+    this.seen[this.tab][keyOf(pr)] = sigOf(pr);
+    this.saveSeen();
+    this.publishChanged(shared("prs.data"));
+  }
+
+  // Items that are new or differ from what was last acknowledged; the first run only sets the baseline.
+  changedCount(id, data) {
+    const items = itemsOf(data, id);
+    if (!items) return 0;
+    if (!this.seen[id]) { this.markSeen([id], data); return 0; }
+    return items.filter((pr) => this.seen[id][keyOf(pr)] !== sigOf(pr)).length;
   }
 
   ci(pr, t) {
@@ -155,10 +207,12 @@ export default class Prs extends View {
       : div().pt(5).child(this.ci(pr, t));
     return v_flex().id(pr.id ? `note-${pr.id}` : `pr-${pr.repo}-${pr.number}`).px(10).py(6).gap(2)
       .hover((s) => s.bg(t.hover))
-      .on_click(() => exec("open", [pr.url]))
+      .on_click((_e, cx) => { this.markSeenOne(pr); cx.notify(); exec("open", [pr.url]); })
       .child(h_flex().gap(6).items_start()
         .child(lead)
-        .child(div().flex_1().min_w(0).whitespace_normal().text_size(13).text_color(t.foreground).child(pr.title)))
+        .child(div().flex_1().min_w(0).whitespace_normal().text_size(13).text_color(t.foreground).child(pr.title))
+        // At the end of the title, not in front of it: the second line is indented to the title past the CI dot.
+        .when(this.isChanged(pr), (el) => el.child(div().text_size(12).text_color(t.working).flex_none().child("●"))))
       .child(h_flex().gap(6).items_center().pl(pr.id ? 0 : 13)
         .child(div().flex_1().min_w(0).truncate().text_size(11).text_color(t.dim)
           .child(`${showRepo ? `${pr.repo} ` : ""}${pr.number ? `#${pr.number} · ` : ""}${this.tab === "review" && !isBot(pr) ? `${pr.author} · ` : ""}${ago(pr.updated)}`))
@@ -251,9 +305,12 @@ export default class Prs extends View {
     const error = shared("prs.error");
     const actionError = shared("prs.actionError");
     const busy = busyNow();
+    this.loadSeen();
     const list = itemsOf(data, this.tab) ?? [];
     const hidden = this.tab === "notes" ? (data?.notes?.length ?? 0) - list.length : 0;
 
+    const changes = Object.fromEntries(TABS.map((x) => [x.id, this.changedCount(x.id, data)]));
+    const totalChanged = Object.values(changes).reduce((a, b) => a + b, 0);
     const tabs = h_flex().px(8).pt(8).pb(4).gap(4).items_center()
       .children(TABS.map((x) => {
         const n = itemsOf(data, x.id)?.length;
@@ -261,10 +318,14 @@ export default class Prs extends View {
         return div().id(`tab-${x.id}`).px(8).py(3).rounded(6).text_size(12)
           .text_color(on ? t.foreground : t.muted).bg(on ? t.selected : "#00000000")
           .hover((s) => s.bg(on ? t.selected : t.hover))
-          .on_click((_e, cx) => { this.tab = x.id; cx.notify(); })
-          .child(n === undefined ? x.label : `${x.label} ${n}`);
+          .on_click((_e, cx) => { this.tab = x.id; if (x.id === "notes") this.markSeen([x.id], data); cx.notify(); })
+          .child(`${n === undefined ? x.label : `${x.label} ${n}`}${changes[x.id] > 0 ? " ●" : ""}`);
       }))
       .child(div().flex_1())
+      .when(totalChanged > 0, (el) => el.child(div().id("changed").px(6).py(3).rounded(6).text_size(11).text_color(t.working)
+        .hover((s) => s.bg(t.hover))
+        .on_click((_e, cx) => { this.markSeen(TABS.map((x) => x.id), data); cx.notify(); })
+        .child(`● ${totalChanged} changed`)))
       .child(div().id("refresh").px(6).py(3).rounded(6).text_size(11).text_color(t.dim)
         .hover((s) => s.bg(t.hover))
         .on_click((_e, cx) => this.refresh(cx, true))
