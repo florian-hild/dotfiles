@@ -52,7 +52,12 @@ if [ "$ok" != 1 ]; then
   exit 1
 fi
 
-jq --arg login "$LOGIN" '
+# Claude limits are written by ~/.claude/statusline.sh while Claude Code runs. Without the
+# file (or with invalid JSON) `claude` stays null and the my-status footer shows nothing.
+CLAUDE="$(cat "$HOME/.claude/state/rate-limits.json" 2>/dev/null || echo null)"
+echo "$CLAUDE" | jq -e . >/dev/null 2>&1 || CLAUDE=null
+
+jq --arg login "$LOGIN" --argjson claude "$CLAUDE" '
   def pr: {
     number, title, url, draft: .isDraft, created: .createdAt, updated: .updatedAt,
     repo: .repository.name, author: .author.login, decision: .reviewDecision,
@@ -64,6 +69,7 @@ jq --arg login "$LOGIN" '
   {
     login: $login,
     fetchedAt: (now | floor),
+    claude: $claude,
     mine: [.data.mine.nodes[] | select(. != null) | pr],
     # Assigned PRs of other people join the review list even without a review request or after the
     # viewer reviewed them, so the "Assigned to me" group is complete. A PR in both searches counts once.

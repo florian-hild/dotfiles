@@ -167,7 +167,7 @@
           "id": "status",
           "type": "block",
           "content": {
-            "mod": "status-tmux"
+            "mod": "my-status"
           },
           "size": {
             "px": 28
