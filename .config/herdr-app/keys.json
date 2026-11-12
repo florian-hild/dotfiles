@@ -37,6 +37,7 @@
     "shift-right": "pane.go:right",
     "shift-up": "pane.go:up",
     "shift-down": "pane.go:down",
+    "ctrl-a": "my-status.arm",
     "f2": "tab.rename",
     "shift-f2": "space.rename",
     "cmd-/": "app.help",
